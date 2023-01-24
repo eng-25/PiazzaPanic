@@ -51,7 +51,7 @@ public abstract class ScreenBase implements Screen, InputProcessor {
      */
     public TextButton createTextButton(String buttonText, float padLeft, float padTop, Table table,
                                        Color textColour) {
-        TextureRegionDrawable buttonTex = new TextureRegionDrawable(resourceManager.button);
+        TextureRegionDrawable buttonTex = new TextureRegionDrawable(resourceManager.buttonUp);
         BitmapFont font = resourceManager.font;
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle(buttonTex, buttonTex, null, font);
@@ -89,7 +89,6 @@ public abstract class ScreenBase implements Screen, InputProcessor {
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -105,12 +104,10 @@ public abstract class ScreenBase implements Screen, InputProcessor {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override

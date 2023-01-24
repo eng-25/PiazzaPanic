@@ -25,8 +25,6 @@ public class ScreenGame extends ScreenBase {
         super(game, rm, new ExtendViewport(width, height, new OrthographicCamera()));
     }
 
-
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
