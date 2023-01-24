@@ -24,7 +24,6 @@ public class ScreenGame extends ScreenBase {
     public ScreenGame(PiazzaPanic game, ResourceManager rm, int width, int height) {
         super(game, rm, new ExtendViewport(width, height, new OrthographicCamera()));
     }
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
