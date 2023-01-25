@@ -5,6 +5,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 /**
  * Used to centrally load and store all resource: textures, fonts, sounds, etc.
@@ -29,6 +31,8 @@ public class ResourceManager {
     public TextureRegion windowTex;
 
     public BitmapFont font;
+
+    public TiledMap gameMap;
 
     private final AssetManager assetManager = new AssetManager();
 
@@ -57,6 +61,9 @@ public class ResourceManager {
 
         // font
         font = new BitmapFont(Gdx.files.internal("assets/fonts/font.fnt"), false);
+
+        // map
+        gameMap = new TmxMapLoader().load("assets/maps/kitchen.tmx");
 
     }
 
