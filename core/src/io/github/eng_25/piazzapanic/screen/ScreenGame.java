@@ -6,16 +6,19 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
+import io.github.eng_25.piazzapanic.util.UIHelper;
 import io.github.eng_25.piazzapanic.window.WindowGuide;
 import io.github.eng_25.piazzapanic.window.WindowPause;
 
@@ -56,6 +59,7 @@ public class ScreenGame extends ScreenBase {
         UIStage.addActor(UITable);
 
         setupWindows();
+        setupUI();
 
         addActors();
     }
@@ -101,6 +105,18 @@ public class ScreenGame extends ScreenBase {
     private void centreWindow(Window window) {
         window.setPosition((UIViewport.getWorldWidth() - window.getWidth())/2f,
                 (UIViewport.getWorldHeight() - window.getHeight())/2f);
+    }
+
+    private void setupUI() {
+        // pause button
+        final TextButton pauseButton = UIHelper.createTextButton("Pause",
+                UIViewport.getWorldWidth()-resourceManager.buttonUp.getRegionWidth(), 0, UITable);
+        pauseButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pauseWindow.setVisible(true);
+            }
+        });
     }
 
 

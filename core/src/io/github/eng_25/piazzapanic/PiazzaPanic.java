@@ -44,4 +44,8 @@ public class PiazzaPanic extends Game {
     public ScreenMenu getMenuScreen() {
         return menuScreen;
     }
+
+    public boolean isMuted() {
+        return isMuted;
+    }
 }

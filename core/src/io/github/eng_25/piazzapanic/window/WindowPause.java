@@ -35,13 +35,15 @@ public class WindowPause extends WindowClosable {
         float padLeft = table.getWidth()-resourceManager.buttonUp.getRegionWidth();
         float padTop = table.getHeight();
 
-        TextButton guideButton = UIHelper.createTextButton("How To Play", padLeft, padTop, table);
-        TextButton muteButton = UIHelper.createTextButton("Mute", padLeft, padTop, table);
+        final TextButton guideButton = UIHelper.createTextButton("How To Play", padLeft, padTop, table);
+        final TextButton muteButton = UIHelper.createTextButton("Mute", padLeft, padTop, table);
 
         muteButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.toggleMuted();
+                String newText = game.isMuted() ? "Unmute" : "Mute";
+                muteButton.setText(newText);
             }
         });
 
