@@ -3,11 +3,11 @@ package io.github.eng_25.piazzapanic.common.ingredient;
 import com.badlogic.gdx.graphics.Texture;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
-import java.util.List;
 import java.util.Map;
 
-public class Ingredient extends BaseIngredient implements Comparable {
+public class Ingredient extends BaseIngredient implements Comparable<Ingredient> {
 
+    // map of ingredients to be referred to
     public static final ResourceManager rm = new ResourceManager();
     public static final Map<String, Ingredient> INGREDIENT_MAP = Map.of(
             "Onion", new Ingredient("onion", rm.onionUnprepared.getTexture(), rm.onionPrepared.getTexture()),
@@ -18,7 +18,7 @@ public class Ingredient extends BaseIngredient implements Comparable {
     );
 
     private boolean isPrepared;
-    private final Texture[] textures;
+    private final Texture[] textures; // {unprepared, prepared}
 
     public Ingredient(String name, Texture unprepared, Texture prepared) {
         super(name);
@@ -26,25 +26,31 @@ public class Ingredient extends BaseIngredient implements Comparable {
         textures = new Texture[]{unprepared, prepared};
     }
 
+    /**
+     * sets isPrepared to true
+     * returns itself, so ingredients can be created and prepared in the same line
+     * e.g. Ingredient ing = new Ingredient().prepare()
+     * @return itself, now prepared
+     */
     public Ingredient prepare() {
         isPrepared = true;
         return this;
     }
 
+    /**
+     * Gets current ingredient texture
+     * @return prepared texture if isPrepared true, unprepared texture otherwise
+     */
     @Override
     Texture getTexture() {
         return isPrepared ? textures[1] : textures[0];
     }
 
     @Override
-    public int compareTo(Object o) {
-        if (o instanceof Ingredient) {
-            Ingredient ing = (Ingredient) o;
-            if ((ing.isPrepared && this.isPrepared) && (ing.getName().equals(this.getName()))) {
-                return 0;
-            }
-            return ing.getName().compareTo(this.getName());
+    public int compareTo(Ingredient ing) {
+        if ((ing.isPrepared && this.isPrepared) && (ing.getName().equals(this.getName()))) {
+            return 0;
         }
-        return -1;
+        return ing.getName().compareTo(this.getName());
     }
 }

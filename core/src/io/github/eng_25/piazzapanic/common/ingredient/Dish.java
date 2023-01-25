@@ -7,12 +7,14 @@ import java.util.Map;
 
 public class Dish extends BaseIngredient {
 
+    // map of dishes to be referred to
     private static final ResourceManager rm = new ResourceManager();
     public static final Map<String, Dish> DISH_MAP = Map.of(
             "Salad", new Dish("salad", rm.salad.getTexture()),
             "Burger", new Dish("burger", rm.burger.getTexture())
     );
 
+    // Dish only has a single texture
     private Texture texture;
 
     public Dish(String name, Texture tex) {
