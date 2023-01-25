@@ -12,11 +12,14 @@ import io.github.eng_25.piazzapanic.util.ResourceManager;
 public abstract class WindowClosable extends Window {
 
     private final ImageButton.ImageButtonStyle closeButtonStyle;
+    protected final ResourceManager resourceManager;
 
     public WindowClosable(String title, ResourceManager resourceManager) {
         super(title, new WindowStyle(
                 resourceManager.font, Color.BLACK, new TextureRegionDrawable(resourceManager.windowTex)
         ));
+
+        this.resourceManager = resourceManager;
 
         closeButtonStyle = new ImageButton.ImageButtonStyle();
         closeButtonStyle.imageUp = new TextureRegionDrawable(resourceManager.closeButton);
@@ -36,9 +39,10 @@ public abstract class WindowClosable extends Window {
             }
         });
 
+        getTitleTable().top().left();
         getTitleTable().add(closeButton) // add close button to window's table so that it is rendered
                 .size(40, 40)
-                .padRight(10)
-                .padTop(40);
+                        .padRight(10);
+        getTitleTable().row();
     }
 }
