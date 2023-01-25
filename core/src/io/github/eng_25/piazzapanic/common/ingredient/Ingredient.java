@@ -17,6 +17,10 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
             "Bun", new Ingredient("bun", rm.bread.getTexture(), rm.bread.getTexture()).prepare() // always prepared
     );
 
+    public static Ingredient copyOf(Ingredient ing) {
+        return new Ingredient(ing.getName(), ing.textures[0], ing.textures[1]);
+    }
+
     private boolean isPrepared;
     private final Texture[] textures; // {unprepared, prepared}
 
@@ -37,6 +41,10 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
         return this;
     }
 
+    public boolean isPrepared() {
+        return isPrepared;
+    }
+
     /**
      * Gets current ingredient texture
      * @return prepared texture if isPrepared true, unprepared texture otherwise
@@ -53,4 +61,5 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
         }
         return ing.getName().compareTo(this.getName());
     }
+
 }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public abstract class BaseIngredient {
 
-    private String name;
+    private final String name;
 
     public BaseIngredient(String name) {
         this.name = name;

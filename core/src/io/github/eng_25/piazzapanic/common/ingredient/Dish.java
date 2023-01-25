@@ -14,6 +14,10 @@ public class Dish extends BaseIngredient {
             "Burger", new Dish("burger", rm.burger.getTexture())
     );
 
+    public static Dish copyOf(Dish dish) {
+        return new Dish(dish.getName(), dish.getTexture());
+    }
+
     // Dish only has a single texture
     private Texture texture;
 

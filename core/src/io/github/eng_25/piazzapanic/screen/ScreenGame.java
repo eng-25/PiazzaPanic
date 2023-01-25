@@ -17,12 +17,15 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
+import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 import io.github.eng_25.piazzapanic.window.WindowGuide;
 import io.github.eng_25.piazzapanic.window.WindowPause;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * The screen for the main game itself
@@ -62,6 +65,7 @@ public class ScreenGame extends ScreenBase {
         setupUI();
 
         addActors();
+
     }
 
     /**
