@@ -1,17 +1,28 @@
 package io.github.eng_25.piazzapanic.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
+import io.github.eng_25.piazzapanic.window.WindowClosable;
 
 /**
  * The screen for the main game itself
  */
 public class ScreenGame extends ScreenBase {
+
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private final ScreenViewport UIViewport;
+    private final Table UITable;
+    private final Stage UIStage;
 
 
     /**
@@ -22,12 +33,26 @@ public class ScreenGame extends ScreenBase {
      * @param height the height of the window when the game was started
      */
     public ScreenGame(PiazzaPanic game, ResourceManager rm, int width, int height) {
-        super(game, rm, new ExtendViewport(width, height, new OrthographicCamera()));
+        super(game, rm, new ExtendViewport(16, 9, new OrthographicCamera()));
+        // UI setup
+        UIViewport = new ScreenViewport();
+        UIStage = new Stage(UIViewport);
+        UITable = createTable(); // create table for laying out UI elements
+        UITable.top().left(); // set table's gravity to top left
+        UIStage.addActor(UITable);
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(this);
+        // setup InputMultiplexer to handle both UI input and other key inputs for this class simultaneously
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(UIStage);
+        inputMultiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
+        // setup TiledMap with 1/32 as tiles are 32x32px
+        mapRenderer = new OrthogonalTiledMapRenderer(resourceManager.gameMap, 1/32f);
+        camera.update();
     }
 
     @Override
@@ -40,18 +65,32 @@ public class ScreenGame extends ScreenBase {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // render map
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+
+        // act and draw main stage
         stage.act(delta);
         stage.draw();
+
+        // UI stage
+        UIViewport.apply();
+        UIStage.act(delta);
+        UIStage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, false); // don't centre camera, we want to centre it on current cook
+        viewport.update(width, height); // don't centre camera, should be positioned on current cook
+        UIViewport.update(width, height, true); // do centre camera for UI
     }
 
     @Override
     public void dispose() {
         super.dispose();
+        mapRenderer.dispose();
+        stage.dispose();
+        UIStage.dispose();
     }
 
     // handle most inputs in keyDown and keyUp!

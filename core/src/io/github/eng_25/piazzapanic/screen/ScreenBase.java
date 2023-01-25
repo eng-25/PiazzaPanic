@@ -51,10 +51,11 @@ public abstract class ScreenBase implements Screen, InputProcessor {
      */
     public TextButton createTextButton(String buttonText, float padLeft, float padTop, Table table,
                                        Color textColour) {
-        TextureRegionDrawable buttonTex = new TextureRegionDrawable(resourceManager.buttonUp);
+        TextureRegionDrawable buttonUp = new TextureRegionDrawable(resourceManager.buttonUp);
+        TextureRegionDrawable buttonDown = new TextureRegionDrawable(resourceManager.buttonDown);
         BitmapFont font = resourceManager.font;
 
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle(buttonTex, buttonTex, null, font);
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle(buttonUp, buttonDown, null, font);
         TextButton button = new TextButton(buttonText, buttonStyle);
         button.getLabel().setColor(textColour);
 
