@@ -4,9 +4,16 @@ size: 1024, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+bun_prepared
+  rotate: false
+  xy: 990, 422
+  size: 32, 21
+  orig: 32, 21
+  offset: 0, 0
+  index: -1
 burger
   rotate: false
-  xy: 754, 183
+  xy: 856, 252
   size: 24, 19
   orig: 24, 19
   offset: 0, 0
@@ -30,6 +37,13 @@ close_button
   xy: 754, 238
   size: 100, 60
   orig: 100, 60
+  offset: 0, 0
+  index: -1
+cook
+  rotate: false
+  xy: 788, 204
+  size: 16, 32
+  orig: 16, 32
   offset: 0, 0
   index: -1
 lettuce_prepared
@@ -62,7 +76,7 @@ meat_unprepared
   index: -1
 onion_prepared
   rotate: false
-  xy: 990, 423
+  xy: 956, 422
   size: 32, 20
   orig: 32, 20
   offset: 0, 0
@@ -81,18 +95,18 @@ salad
   orig: 32, 32
   offset: 0, 0
   index: -1
-tomato_unprepared
-  rotate: false
-  xy: 788, 218
-  size: 19, 18
-  orig: 19, 18
-  offset: 0, 0
-  index: -1
 tomato_prepared
   rotate: false
-  xy: 956, 425
+  xy: 754, 185
   size: 32, 17
   orig: 32, 17
+  offset: 0, 0
+  index: -1
+tomato_unprepared
+  rotate: false
+  xy: 890, 280
+  size: 19, 18
+  orig: 19, 18
   offset: 0, 0
   index: -1
 window
