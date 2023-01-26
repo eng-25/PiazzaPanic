@@ -81,7 +81,7 @@ salad
   orig: 32, 32
   offset: 0, 0
   index: -1
-tomato
+tomato_unprepared
   rotate: false
   xy: 788, 218
   size: 19, 18

@@ -28,6 +28,7 @@ public class ResourceManager {
     public TextureRegion meatUnprepared;
     public TextureRegion tomatoPrepared;
     public TextureRegion tomatoUnprepared;
+    public TextureRegion bread;
     public TextureRegion windowTex;
 
     public BitmapFont font;
@@ -58,6 +59,7 @@ public class ResourceManager {
         meatUnprepared = atlas.findRegion("meat_unprepared");
         tomatoPrepared = atlas.findRegion("tomato_prepared");
         tomatoUnprepared = atlas.findRegion("tomato_unprepared");
+        bread = atlas.findRegion("salad"); // TODO: fix once texture added
 
         // font
         font = new BitmapFont(Gdx.files.internal("assets/fonts/font.fnt"), false);
