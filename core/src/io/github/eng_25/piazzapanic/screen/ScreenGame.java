@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
+import io.github.eng_25.piazzapanic.common.entity.Cook;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
@@ -36,6 +38,9 @@ public class ScreenGame extends ScreenBase {
     private final ScreenViewport UIViewport;
     private final Table UITable;
     private final Stage UIStage;
+    private final Cook cook1;
+    private final Cook cook2;
+    private Cook currentCook;
 
     private WindowPause pauseWindow;
     private WindowGuide guideWindow;
@@ -60,6 +65,13 @@ public class ScreenGame extends ScreenBase {
         UITable = createTable(); // create table for laying out UI elements
         UITable.top().left(); // set table's gravity to top left
         UIStage.addActor(UITable);
+
+        // cook setup
+        cook1 = new Cook(resourceManager, new Vector2(0, 0));
+        cook2 = new Cook(resourceManager, new Vector2(8, 8));
+        currentCook = cook1;
+
+        adjustCam();
 
         setupWindows();
         setupUI();
@@ -123,12 +135,19 @@ public class ScreenGame extends ScreenBase {
         });
     }
 
+    private void adjustCam() {
+        camera.position.set(currentCook.getPosition(), 0);
+        camera.update();
+    }
+
 
     /**
      * Add actors to stages
      */
     private void addActors() {
 
+        stage.addActor(cook1);
+        stage.addActor(cook2);
 
         UIStage.addActor(guideWindow);
         UIStage.addActor(pauseWindow);
