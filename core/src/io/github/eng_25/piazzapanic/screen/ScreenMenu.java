@@ -1,7 +1,6 @@
 package io.github.eng_25.piazzapanic.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -52,7 +51,7 @@ public class ScreenMenu extends ScreenBase {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new ScreenGame(game, resourceManager, viewport.getScreenWidth(), viewport.getScreenHeight()));
+                game.setScreen(new ScreenGame(game, resourceManager));
             }
         });
     }

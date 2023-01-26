@@ -37,6 +37,7 @@ public enum Recipes {
 
     /**
      * Checks a list of ingredients against all recipes in the Enum.
+     *
      * @param listOfIngredients the list to be checked
      * @return Dish if list passed is valid recipe, null if not
      */

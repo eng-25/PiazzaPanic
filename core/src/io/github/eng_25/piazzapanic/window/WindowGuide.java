@@ -1,7 +1,5 @@
 package io.github.eng_25.piazzapanic.window;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 

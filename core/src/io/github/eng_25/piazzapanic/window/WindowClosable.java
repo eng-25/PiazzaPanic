@@ -42,7 +42,7 @@ public abstract class WindowClosable extends Window {
         getTitleTable().top().left();
         getTitleTable().add(closeButton) // add close button to window's table so that it is rendered
                 .size(40, 40)
-                        .padRight(10);
+                .padRight(10);
         getTitleTable().row();
     }
 }

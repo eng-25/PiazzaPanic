@@ -1,13 +1,10 @@
 package io.github.eng_25.piazzapanic.window;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
-import io.github.eng_25.piazzapanic.screen.ScreenBase;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 
@@ -32,7 +29,7 @@ public class WindowPause extends WindowClosable {
         Table table = getTitleTable();
 
         table.pack();
-        float padLeft = table.getWidth()-resourceManager.buttonUp.getRegionWidth();
+        float padLeft = table.getWidth() - resourceManager.buttonUp.getRegionWidth();
         float padTop = table.getHeight();
 
         final TextButton guideButton = UIHelper.createTextButton("How To Play", padLeft, padTop, table);

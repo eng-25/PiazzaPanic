@@ -34,6 +34,7 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
      * sets isPrepared to true
      * returns itself, so ingredients can be created and prepared in the same line
      * e.g. Ingredient ing = new Ingredient().prepare()
+     *
      * @return itself, now prepared
      */
     public Ingredient prepare() {
@@ -47,6 +48,7 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
 
     /**
      * Gets current ingredient texture
+     *
      * @return prepared texture if isPrepared true, unprepared texture otherwise
      */
     @Override

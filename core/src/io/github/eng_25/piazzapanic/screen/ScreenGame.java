@@ -5,43 +5,35 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
+import io.github.eng_25.piazzapanic.common.PiazzaMap;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
-import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 import io.github.eng_25.piazzapanic.window.WindowGuide;
 import io.github.eng_25.piazzapanic.window.WindowPause;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
 
 /**
  * The screen for the main game itself
  */
 public class ScreenGame extends ScreenBase {
 
-    private OrthogonalTiledMapRenderer mapRenderer;
     private final ScreenViewport UIViewport;
     private final Table UITable;
     private final Stage UIStage;
     private final Cook cook1;
     private final Cook cook2;
     private Cook currentCook;
+    private PiazzaMap map;
 
     private WindowPause pauseWindow;
     private WindowGuide guideWindow;
@@ -57,7 +49,7 @@ public class ScreenGame extends ScreenBase {
      * @param width  the width of the window when the game was started
      * @param height the height of the window when the game was started
      */
-    public ScreenGame(PiazzaPanic game, ResourceManager rm, int width, int height) {
+    public ScreenGame(PiazzaPanic game, ResourceManager rm) {
         super(game, rm, new ExtendViewport(16, 9, new OrthographicCamera()));
 
         // UI setup
@@ -71,6 +63,9 @@ public class ScreenGame extends ScreenBase {
         cook1 = new Cook(resourceManager, new Vector2(0, 0));
         cook2 = new Cook(resourceManager, new Vector2(8, 8));
         currentCook = cook1;
+
+        // map
+        map = new PiazzaMap(rm, camera);
 
         adjustCam();
 
@@ -109,6 +104,7 @@ public class ScreenGame extends ScreenBase {
 
     /**
      * Resizes a given window based on the WINDOW_SIZE percentage constant
+     *
      * @param window window to be resized
      */
     private void resizeWindow(Window window) {
@@ -117,17 +113,18 @@ public class ScreenGame extends ScreenBase {
 
     /**
      * Re-centres a given window to the centre of the screen, based off the UI Viewport size
+     *
      * @param window window to be centred
      */
     private void centreWindow(Window window) {
-        window.setPosition((UIViewport.getWorldWidth() - window.getWidth())/2f,
-                (UIViewport.getWorldHeight() - window.getHeight())/2f);
+        window.setPosition((UIViewport.getWorldWidth() - window.getWidth()) / 2f,
+                (UIViewport.getWorldHeight() - window.getHeight()) / 2f);
     }
 
     private void setupUI() {
         // pause button
         final TextButton pauseButton = UIHelper.createTextButton("Pause",
-                UIViewport.getWorldWidth()-resourceManager.buttonUp.getRegionWidth(), 0, UITable);
+                UIViewport.getWorldWidth() - resourceManager.buttonUp.getRegionWidth(), 0, UITable);
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -173,8 +170,6 @@ public class ScreenGame extends ScreenBase {
         inputMultiplexer.addProcessor(UIStage);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        // setup TiledMap with 1/32 as tiles are 32x32px
-        mapRenderer = new OrthogonalTiledMapRenderer(resourceManager.gameMap, 1 / 32f);
     }
 
     @Override
@@ -187,9 +182,7 @@ public class ScreenGame extends ScreenBase {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // render map
-        mapRenderer.setView(camera);
-        mapRenderer.render();
+        map.renderMap();
 
         // act and draw main stage
         stage.act(delta);
@@ -208,7 +201,7 @@ public class ScreenGame extends ScreenBase {
         UIViewport.update(width, height, true); // do centre camera for UI
 
         // pause button positioning
-        UITable.getCells().get(0).padLeft(UIViewport.getWorldWidth()-resourceManager.buttonUp.getRegionWidth());
+        UITable.getCells().get(0).padLeft(UIViewport.getWorldWidth() - resourceManager.buttonUp.getRegionWidth());
 
         resizeWindow(pauseWindow);
         resizeWindow(guideWindow);
@@ -220,7 +213,7 @@ public class ScreenGame extends ScreenBase {
     @Override
     public void dispose() {
         super.dispose();
-        mapRenderer.dispose();
+        map.dispose();
         stage.dispose();
         UIStage.dispose();
     }
