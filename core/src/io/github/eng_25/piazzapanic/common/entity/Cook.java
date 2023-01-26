@@ -1,6 +1,5 @@
 package io.github.eng_25.piazzapanic.common.entity;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -11,36 +10,34 @@ import io.github.eng_25.piazzapanic.util.SizedStack;
 
 public class Cook extends Actor {
 
-    public static final float MOVEMENT_SPEED = 0.1f; // movement speed
+    public static final float MOVEMENT_SPEED = 3f; // movement speed
 
-    private SizedStack<BaseIngredient> stack;
-    private Vector2 position;
-    private final ResourceManager resourceManager;
-    private Vector2 movement;
+    private final SizedStack<BaseIngredient> stack;
+    private final Vector2 position;
+    private final Vector2 movement;
     TextureRegion texture;
 
     public Cook(ResourceManager rm, Vector2 originalPos) {
         stack = new SizedStack<BaseIngredient>(3);
-        this.resourceManager = rm;
         this.position = originalPos;
         this.movement = new Vector2(0, 0);
-        texture = resourceManager.cook;
+        texture = rm.cook;
     }
 
     public void moveLeft() {
-        movement.x += 1;
+        movement.x = -1;
     }
 
     public void moveRight() {
-        movement.x -= 1;
+        movement.x = 1;
     }
 
     public void moveUp() {
-        movement.y += 1;
+        movement.y = 1;
     }
 
     public void moveDown() {
-        movement.y -= 1;
+        movement.y = -1;
     }
 
     @Override
@@ -83,6 +80,19 @@ public class Cook extends Actor {
 
     public boolean isStackFull() {
         return stack.isFull();
+    }
+
+    public void resetY() {
+        movement.y = 0;
+    }
+
+    public void resetX() {
+        movement.x = 0;
+    }
+
+    public void stopMoving() {
+        resetX();
+        resetY();
     }
 
 }

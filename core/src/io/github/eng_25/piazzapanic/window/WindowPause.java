@@ -29,7 +29,7 @@ public class WindowPause extends WindowClosable {
     }
 
     private void setupButtons() {
-        Table table = getTitleTable(); //TODO: change padTop to non-hardcoded value?
+        Table table = getTitleTable();
 
         table.pack();
         float padLeft = table.getWidth()-resourceManager.buttonUp.getRegionWidth();

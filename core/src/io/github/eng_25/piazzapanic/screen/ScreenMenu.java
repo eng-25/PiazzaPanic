@@ -61,7 +61,6 @@ public class ScreenMenu extends ScreenBase {
     public void show() {
         table = createTable();
         table.top().padTop(PiazzaPanic.DEFAULT_HEIGHT * TABLE_TOP_PAD_MULTIPLIER); // set table's gravity to top and pad top a little
-        //table.debug(); //TODO: remove
 
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);

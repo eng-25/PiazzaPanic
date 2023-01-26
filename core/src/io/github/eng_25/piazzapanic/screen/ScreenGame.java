@@ -1,6 +1,7 @@
 package io.github.eng_25.piazzapanic.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -135,9 +136,20 @@ public class ScreenGame extends ScreenBase {
         });
     }
 
+    /**
+     * Ensures camera is centred on current cook
+     */
     private void adjustCam() {
         camera.position.set(currentCook.getPosition(), 0);
         camera.update();
+    }
+
+    /**
+     * Switches between cooks
+     */
+    private void switchCooks() {
+        currentCook.stopMoving();
+        currentCook = currentCook == cook1 ? cook2 : cook1;
     }
 
 
@@ -157,13 +169,12 @@ public class ScreenGame extends ScreenBase {
     public void show() {
         // setup InputMultiplexer to handle both UI input and other key inputs for this class simultaneously
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(UIStage);
         inputMultiplexer.addProcessor(this);
+        inputMultiplexer.addProcessor(UIStage);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         // setup TiledMap with 1/32 as tiles are 32x32px
         mapRenderer = new OrthogonalTiledMapRenderer(resourceManager.gameMap, 1 / 32f);
-        camera.update();
     }
 
     @Override
@@ -183,6 +194,7 @@ public class ScreenGame extends ScreenBase {
         // act and draw main stage
         stage.act(delta);
         stage.draw();
+        adjustCam();
 
         // UI stage
         UIViewport.apply();
@@ -194,6 +206,9 @@ public class ScreenGame extends ScreenBase {
     public void resize(int width, int height) {
         viewport.update(width, height); // don't centre camera, should be positioned on current cook
         UIViewport.update(width, height, true); // do centre camera for UI
+
+        // pause button positioning
+        UITable.getCells().get(0).padLeft(UIViewport.getWorldWidth()-resourceManager.buttonUp.getRegionWidth());
 
         resizeWindow(pauseWindow);
         resizeWindow(guideWindow);
@@ -213,12 +228,45 @@ public class ScreenGame extends ScreenBase {
     // handle most inputs in keyDown and keyUp!
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        switch (keycode) {
+            case Input.Keys.W: // up
+                currentCook.moveUp();
+                break;
+            case Input.Keys.S: // down
+                currentCook.moveDown();
+                break;
+            case Input.Keys.A: // left
+                currentCook.moveLeft();
+                break;
+            case Input.Keys.D: // right
+                currentCook.moveRight();
+                break;
+            case Input.Keys.E: // switch
+                switchCooks();
+                break;
+            case Input.Keys.F: // interact
+                //TODO: Interact
+            default:
+                return false;
+        }
+        return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        return false;
+        switch (keycode) {
+            case Input.Keys.W:
+            case Input.Keys.S:
+                currentCook.resetY();
+                break;
+            case Input.Keys.A:
+            case Input.Keys.D:
+                currentCook.resetX();
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
 

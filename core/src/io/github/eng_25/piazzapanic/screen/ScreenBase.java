@@ -21,7 +21,7 @@ public abstract class ScreenBase implements Screen, InputProcessor {
 
     protected final PiazzaPanic game;
     protected ResourceManager resourceManager;
-    protected Stage stage; //TODO: Do we need to use this?
+    protected Stage stage;
 
     // attached to stage, here for ease of access
     protected OrthographicCamera camera;
