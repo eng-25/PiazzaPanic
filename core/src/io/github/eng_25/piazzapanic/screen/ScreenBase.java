@@ -2,13 +2,9 @@ package io.github.eng_25.piazzapanic.screen;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
@@ -21,7 +17,7 @@ public abstract class ScreenBase implements Screen, InputProcessor {
 
     protected final PiazzaPanic game;
     protected ResourceManager resourceManager;
-    protected Stage stage; //TODO: Do we need to use this?
+    protected Stage stage;
 
     // attached to stage, here for ease of access
     protected OrthographicCamera camera;

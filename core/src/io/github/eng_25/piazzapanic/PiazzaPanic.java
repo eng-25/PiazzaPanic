@@ -19,6 +19,7 @@ public class PiazzaPanic extends Game {
     public void toggleMuted() {
         isMuted = !isMuted;
     }
+
     @Override
     public void create() {
         batch = new SpriteBatch();

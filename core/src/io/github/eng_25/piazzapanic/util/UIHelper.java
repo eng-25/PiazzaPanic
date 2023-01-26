@@ -22,7 +22,7 @@ public class UIHelper {
      * @return a TextButton using the ResourceManager button texture
      */
     public static TextButton createTextButton(String buttonText, float padLeft, float padTop, Table table,
-                                       Color textColour) {
+                                              Color textColour) {
         TextureRegionDrawable buttonUp = new TextureRegionDrawable(resourceManager.buttonUp);
         TextureRegionDrawable buttonDown = new TextureRegionDrawable(resourceManager.buttonDown);
         BitmapFont font = resourceManager.font;

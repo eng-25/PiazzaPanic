@@ -14,7 +14,7 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
             "Lettuce", new Ingredient("lettuce", rm.lettuceUnprepared.getTexture(), rm.lettucePrepared.getTexture()),
             "Tomato", new Ingredient("tomato", rm.tomatoUnprepared.getTexture(), rm.tomatoPrepared.getTexture()),
             "Meat", new Ingredient("meat", rm.meatUnprepared.getTexture(), rm.meatPrepared.getTexture()),
-            "Bun", new Ingredient("bun", rm.bread.getTexture(), rm.bread.getTexture()).prepare() // always prepared
+            "Bun", new Ingredient("bun", rm.bun.getTexture(), rm.bun.getTexture()).prepare() // always prepared
     );
 
     public static Ingredient copyOf(Ingredient ing) {
@@ -34,6 +34,7 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
      * sets isPrepared to true
      * returns itself, so ingredients can be created and prepared in the same line
      * e.g. Ingredient ing = new Ingredient().prepare()
+     *
      * @return itself, now prepared
      */
     public Ingredient prepare() {
@@ -47,6 +48,7 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
 
     /**
      * Gets current ingredient texture
+     *
      * @return prepared texture if isPrepared true, unprepared texture otherwise
      */
     @Override
