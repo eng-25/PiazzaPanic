@@ -14,7 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class ResourceManager {
 
     public TextureAtlas atlas;
-    //public TextureRegion cook;
+    public TextureRegion cook;
     public TextureRegion buttonUp;
     public TextureRegion buttonDown;
     public TextureRegion burger;
@@ -28,7 +28,7 @@ public class ResourceManager {
     public TextureRegion meatUnprepared;
     public TextureRegion tomatoPrepared;
     public TextureRegion tomatoUnprepared;
-    public TextureRegion bread;
+    public TextureRegion bun;
     public TextureRegion windowTex;
 
     public BitmapFont font;
@@ -59,7 +59,8 @@ public class ResourceManager {
         meatUnprepared = atlas.findRegion("meat_unprepared");
         tomatoPrepared = atlas.findRegion("tomato_prepared");
         tomatoUnprepared = atlas.findRegion("tomato_unprepared");
-        bread = atlas.findRegion("salad"); // TODO: fix once texture added
+        bun = atlas.findRegion("bun_prepared");
+        cook = atlas.findRegion("cook");
 
         // font
         font = new BitmapFont(Gdx.files.internal("assets/fonts/font.fnt"), false);
