@@ -18,7 +18,7 @@ public class Cook extends Actor {
     TextureRegion texture;
 
     public Cook(ResourceManager rm, Vector2 originalPos) {
-        stack = new SizedStack<BaseIngredient>(3);
+        stack = new SizedStack<>(3);
         this.position = originalPos;
         this.movement = new Vector2(0, 0);
         texture = rm.cook;

@@ -9,7 +9,7 @@ import java.util.Stack;
  */
 public class SizedStack<T> extends Stack<T> {
 
-    private int maxSize;
+    private final int maxSize;
 
     /**
      * @param size max size of stack
@@ -35,5 +35,11 @@ public class SizedStack<T> extends Stack<T> {
 
     public boolean isFull() {
         return this.size() == maxSize;
+    }
+
+    @Override
+    public synchronized T peek() {
+        if (isEmpty()) { return null; }
+        return super.peek();
     }
 }
