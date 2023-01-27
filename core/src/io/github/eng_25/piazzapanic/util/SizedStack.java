@@ -36,4 +36,12 @@ public class SizedStack<T> extends Stack<T> {
     public boolean isFull() {
         return this.size() == maxSize;
     }
+
+    @Override
+    public synchronized T peek() {
+        if (isEmpty()) {
+            return null;
+        }
+        return super.peek();
+    }
 }
