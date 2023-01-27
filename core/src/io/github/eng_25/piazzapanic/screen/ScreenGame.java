@@ -5,22 +5,26 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.common.PiazzaMap;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
+import io.github.eng_25.piazzapanic.common.ingredient.BaseIngredient;
+import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 import io.github.eng_25.piazzapanic.window.WindowGuide;
 import io.github.eng_25.piazzapanic.window.WindowPause;
+
+import java.util.ArrayList;
 
 /**
  * The screen for the main game itself
@@ -131,6 +135,41 @@ public class ScreenGame extends ScreenBase {
                 pauseWindow.setVisible(true);
             }
         });
+
+
+        //TODO: remove tests here
+        currentCook.getStack().push(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")));
+        currentCook.getStack().push(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")));
+
+
+        // stack UI
+        //TODO: change first 3 to emptyTex, last to stack tex
+        UITable.add(new Image(resourceManager.burger)).left().row();
+        UITable.add(new Image(resourceManager.salad)).left().row();
+        UITable.add(new Image(resourceManager.buttonDown)).left().row();
+        UITable.add(new Image(resourceManager.closeButton)).left().row();
+        updateStackTextures();
+        adjustStackUIPosition();
+    }
+
+    //TODO: check this works properly with stack order
+    private void updateStackTextures() {
+        // set up list to determine which parts of stack UI are filled and which should be empty
+        ArrayList<BaseIngredient> stackDisplayList = new ArrayList<>();
+        for (Object i : currentCook.getStack().toArray()) {
+            stackDisplayList.add((BaseIngredient) i);
+        }
+        while (stackDisplayList.size() < 3) { stackDisplayList.add(null); }
+
+        // if part of the stack was empty, use the empty texture - otherwise scale
+        //TODO: change buttonUp here to empty tex
+        Array<Cell> cells = UITable.getCells();
+        for (int i=1; i<4; i++) { // 3 stack images
+            BaseIngredient ing = stackDisplayList.get(i-1);
+            TextureRegion tex = ing == null ? resourceManager.buttonUp : ing.getTexture();
+            Image texScaled = new Image(tex);
+            cells.get(i).setActor(texScaled);
+        }
     }
 
     /**
@@ -147,6 +186,16 @@ public class ScreenGame extends ScreenBase {
     private void switchCooks() {
         currentCook.stopMoving();
         currentCook = currentCook == cook1 ? cook2 : cook1;
+    }
+
+    private void adjustStackUIPosition() {
+        float padLeft = UIViewport.getScreenWidth()*0.1f;
+        float initialPadTop = UIViewport.getScreenHeight()*0.4f;
+        float padTop = UIViewport.getScreenHeight()*0.1f;
+        UITable.getCells().get(1).padLeft(padLeft).padTop(initialPadTop);
+        for (int i=2; i<5; i++) {
+            UITable.getCells().get(i).padLeft(padLeft).padTop(padTop);
+        }
     }
 
 
@@ -202,6 +251,9 @@ public class ScreenGame extends ScreenBase {
 
         // pause button positioning
         UITable.getCells().get(0).padLeft(UIViewport.getWorldWidth() - resourceManager.buttonUp.getRegionWidth());
+
+        // stack UI positioning
+        adjustStackUIPosition();
 
         resizeWindow(pauseWindow);
         resizeWindow(guideWindow);
