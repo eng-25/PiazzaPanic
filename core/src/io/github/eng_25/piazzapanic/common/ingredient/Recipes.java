@@ -9,15 +9,15 @@ import java.util.List;
 public enum Recipes {
 
     SALAD(List.of(
-            Ingredient.INGREDIENT_MAP.get("Onion").prepare(),
-            Ingredient.INGREDIENT_MAP.get("Lettuce").prepare(),
-            Ingredient.INGREDIENT_MAP.get("Tomato").prepare()
-    ), Dish.DISH_MAP.get("Salad")),
+            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Onion")).prepare(),
+            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")).prepare(),
+            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato")).prepare()
+    ), Dish.copyOf(Dish.DISH_MAP.get("Salad"))),
     BURGER(List.of(
-            Ingredient.INGREDIENT_MAP.get("Bun"),
-            Ingredient.INGREDIENT_MAP.get("Meat").prepare(),
-            Ingredient.INGREDIENT_MAP.get("Lettuce").prepare()
-    ), Dish.DISH_MAP.get("Burger"));
+            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Bun")),
+            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat")).prepare(),
+            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")).prepare()
+    ), Dish.copyOf(Dish.DISH_MAP.get("Burger")));
 
     private final List<Ingredient> ingredientList;
     private final Dish dishOut;
@@ -44,6 +44,7 @@ public enum Recipes {
     public Dish checkValidRecipe(List<Ingredient> listOfIngredients) {
         Collections.sort(listOfIngredients);
 
+        //TODO: sort r.get... here?
         for (Recipes r : Recipes.values()) {
             if (listOfIngredients.equals(r.getIngredientList())) {
                 return r.getDish();

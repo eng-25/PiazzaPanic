@@ -1,6 +1,7 @@
 package io.github.eng_25.piazzapanic.common.ingredient;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
 import java.util.Map;
@@ -10,11 +11,11 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
     // map of ingredients to be referred to
     public static final ResourceManager rm = new ResourceManager();
     public static final Map<String, Ingredient> INGREDIENT_MAP = Map.of(
-            "Onion", new Ingredient("onion", rm.onionUnprepared.getTexture(), rm.onionPrepared.getTexture()),
-            "Lettuce", new Ingredient("lettuce", rm.lettuceUnprepared.getTexture(), rm.lettucePrepared.getTexture()),
-            "Tomato", new Ingredient("tomato", rm.tomatoUnprepared.getTexture(), rm.tomatoPrepared.getTexture()),
-            "Meat", new Ingredient("meat", rm.meatUnprepared.getTexture(), rm.meatPrepared.getTexture()),
-            "Bun", new Ingredient("bun", rm.bun.getTexture(), rm.bun.getTexture()).prepare() // always prepared
+            "Onion", new Ingredient("onion", rm.onionUnprepared, rm.onionPrepared),
+            "Lettuce", new Ingredient("lettuce", rm.lettuceUnprepared, rm.lettucePrepared),
+            "Tomato", new Ingredient("tomato", rm.tomatoUnprepared, rm.tomatoPrepared),
+            "Meat", new Ingredient("meat", rm.meatUnprepared, rm.meatPrepared),
+            "Bun", new Ingredient("bun", rm.bun, rm.bun).prepare() // always prepared
     );
 
     public static Ingredient copyOf(Ingredient ing) {
@@ -22,12 +23,12 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
     }
 
     private boolean isPrepared;
-    private final Texture[] textures; // {unprepared, prepared}
+    private final TextureRegion[] textures; // {unprepared, prepared}
 
-    public Ingredient(String name, Texture unprepared, Texture prepared) {
+    public Ingredient(String name, TextureRegion unprepared, TextureRegion prepared) {
         super(name);
         isPrepared = false;
-        textures = new Texture[]{unprepared, prepared};
+        textures = new TextureRegion[]{unprepared, prepared};
     }
 
     /**
@@ -52,7 +53,7 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
      * @return prepared texture if isPrepared true, unprepared texture otherwise
      */
     @Override
-    Texture getTexture() {
+    public TextureRegion getTexture() {
         return isPrepared ? textures[1] : textures[0];
     }
 
