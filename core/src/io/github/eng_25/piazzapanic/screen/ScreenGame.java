@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.common.PiazzaMap;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
+import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
 import io.github.eng_25.piazzapanic.common.ingredient.BaseIngredient;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
@@ -50,8 +51,6 @@ public class ScreenGame extends ScreenBase {
      *
      * @param game   main game class
      * @param rm     ResourceManager instance
-     * @param width  the width of the window when the game was started
-     * @param height the height of the window when the game was started
      */
     public ScreenGame(PiazzaPanic game, ResourceManager rm) {
         super(game, rm, new ExtendViewport(16, 9, new OrthographicCamera()));
@@ -67,6 +66,7 @@ public class ScreenGame extends ScreenBase {
         cook1 = new Cook(resourceManager, new Vector2(0, 0));
         cook2 = new Cook(resourceManager, new Vector2(8, 8));
         currentCook = cook1;
+        cook1.pushStack(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat")));
 
         // map
         map = new PiazzaMap(rm, camera);
@@ -290,7 +290,12 @@ public class ScreenGame extends ScreenBase {
                 switchCooks();
                 break;
             case Input.Keys.F: // interact
-                //TODO: Interact
+                // find nearest InteractionStation to current cook
+                InteractionStation toInteractWith = map.checkInteraction(currentCook);
+                if (toInteractWith == null) { break; }
+                if (toInteractWith.canInteract(currentCook)) { // check if interaction is valid
+                    toInteractWith.interact();
+                }
             default:
                 return false;
         }
