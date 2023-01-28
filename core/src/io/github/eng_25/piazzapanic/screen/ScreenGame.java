@@ -43,6 +43,8 @@ public class ScreenGame extends ScreenBase {
     private WindowPause pauseWindow;
     private WindowGuide guideWindow;
 
+    private boolean interactHappened;
+
     public static final float WINDOW_SIZE = 0.6f;
 
 
@@ -54,6 +56,7 @@ public class ScreenGame extends ScreenBase {
      */
     public ScreenGame(PiazzaPanic game, ResourceManager rm) {
         super(game, rm, new ExtendViewport(16, 9, new OrthographicCamera()));
+        interactHappened = false;
 
         // UI setup
         UIViewport = new ScreenViewport();
@@ -66,7 +69,7 @@ public class ScreenGame extends ScreenBase {
         cook1 = new Cook(resourceManager, new Vector2(0, 0));
         cook2 = new Cook(resourceManager, new Vector2(8, 8));
         currentCook = cook1;
-        cook1.pushStack(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat")));
+        // cook1.pushStack(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat"))); // remove later <- removed to test pantryboxes
 
         // map
         map = new PiazzaMap(rm, camera);
@@ -138,8 +141,12 @@ public class ScreenGame extends ScreenBase {
 
 
         //TODO: remove tests here
-        currentCook.getStack().push(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")));
-        currentCook.getStack().push(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")));
+        Ingredient lettuce = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce"));
+        currentCook.getStack().push(lettuce.prepare());
+        Ingredient onion = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Onion"));
+        currentCook.getStack().push(onion.prepare());
+        Ingredient tomato = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato"));
+        currentCook.getStack().push(tomato.prepare());
 
 
         // stack UI
@@ -218,7 +225,7 @@ public class ScreenGame extends ScreenBase {
         inputMultiplexer.addProcessor(this);
         inputMultiplexer.addProcessor(UIStage);
         Gdx.input.setInputProcessor(inputMultiplexer);
-
+        currentCook.getStack().forEach(i -> System.out.println(i.getName()));
     }
 
     @Override
@@ -242,6 +249,9 @@ public class ScreenGame extends ScreenBase {
         UIViewport.apply();
         UIStage.act(delta);
         UIStage.draw();
+
+        // System.out.println(currentCook.getPosition());
+        // System.out.println(currentCook.peekStack().getName());
     }
 
     @Override
@@ -293,7 +303,8 @@ public class ScreenGame extends ScreenBase {
                 // find nearest InteractionStation to current cook
                 InteractionStation toInteractWith = map.checkInteraction(currentCook);
                 if (toInteractWith == null) { break; }
-                if (toInteractWith.canInteract(currentCook)) { // check if interaction is valid
+                if (toInteractWith.canInteract(currentCook) && !interactHappened) { // check if interaction is valid
+                    interactHappened = true;
                     toInteractWith.interact();
                 }
             default:
@@ -312,6 +323,9 @@ public class ScreenGame extends ScreenBase {
             case Input.Keys.A:
             case Input.Keys.D:
                 currentCook.resetX();
+                break;
+            case Input.Keys.F:
+                interactHappened = false;
                 break;
             default:
                 return false;

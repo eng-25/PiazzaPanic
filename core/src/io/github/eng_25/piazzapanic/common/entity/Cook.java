@@ -84,6 +84,8 @@ public class Cook extends Actor {
         return stack.isFull();
     }
 
+    public boolean isStackEmpty() { return stack.isEmpty(); }
+
     public void resetY() {
         movement.y = 0;
     }

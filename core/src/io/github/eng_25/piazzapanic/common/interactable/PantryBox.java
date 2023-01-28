@@ -10,21 +10,25 @@ import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
  */
 public class PantryBox extends InteractionStation {
 
-    private final Ingredient output;
+    private final Ingredient toOutput;
+    private Cook attachedCook;
 
-    public PantryBox(Vector2 position, Ingredient output) {
+    public PantryBox(Vector2 position, Ingredient toOutput) {
         super(position, 0);
-        this.output = output;
+        this.toOutput = toOutput;
+        attachedCook = null;
     }
 
     @Override
     public void finishInteract() {
-
+        attachedCook.pushStack(toOutput);
     }
 
     @Override
     public boolean canInteract(Cook cook) {
-        return false;
+        if (!(cook.isStackFull())) {
+            attachedCook = cook;
+            return true;
+        } return false;
     }
-    // how do I test for this?
 }
