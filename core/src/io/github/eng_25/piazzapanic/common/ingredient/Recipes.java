@@ -1,7 +1,7 @@
 package io.github.eng_25.piazzapanic.common.ingredient;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Used to store recipes of dishes
@@ -41,12 +41,9 @@ public enum Recipes {
      * @param listOfIngredients the list to be checked
      * @return Dish if list passed is valid recipe, null if not
      */
-    public Dish checkValidRecipe(List<Ingredient> listOfIngredients) {
-        Collections.sort(listOfIngredients);
-
-        //TODO: sort r.get... here?
+    public static Dish checkValidRecipe(List<Ingredient> listOfIngredients) {
         for (Recipes r : Recipes.values()) {
-            if (listOfIngredients.equals(r.getIngredientList())) {
+            if (new TreeSet<>(listOfIngredients).equals(new TreeSet<>(r.getIngredientList()))) {
                 return r.getDish();
             }
         }

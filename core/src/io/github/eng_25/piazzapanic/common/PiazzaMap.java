@@ -18,13 +18,23 @@ public class PiazzaMap {
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final OrthographicCamera camera;
     private final ArrayList<InteractionStation> interactableList;
+
     private CookingStation pan1;
-
+    private CookingStation pan2;
+    private CookingStation chopping1;
+    private CookingStation chopping2;
     private Bin bin;
-
     private PantryBox bunBox;
-
-    private PlatingStation platingStation;
+    private PantryBox tomatoBox;
+    private PantryBox onionBox;
+    private PantryBox lettuceBox;
+    private PantryBox meatBox;
+    private PlatingStation plating1;
+    private PlatingStation plating2;
+    private PlatingStation plating3;
+    private Counter counter1;
+    private Counter counter2;
+    private Counter counter3;
 
     public PiazzaMap(ResourceManager rm, OrthographicCamera camera) {
         this.map = rm.gameMap;
@@ -43,16 +53,25 @@ public class PiazzaMap {
         );
 
         //TODO: _Sam: add all stations here, add all to list below
-        pan1 = new CookingStation(new Vector2(1, 14), panIngredients, 3);
+        pan1 = new CookingStation(new Vector2(1, 13), panIngredients, 3);
+        pan2 = new CookingStation(new Vector2(3, 13), panIngredients, 3);
+        chopping1 = new CookingStation(new Vector2(5, 13), choppingIngredients, 2);
+        chopping2 = new CookingStation(new Vector2(7, 13), choppingIngredients, 2);
         bin = new Bin(new Vector2(0, 14), 0);
-        bunBox = new PantryBox(new Vector2(0, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Bun")));
-        platingStation = new PlatingStation(new Vector2(4,14), 0);
+        bunBox = new PantryBox(new Vector2(0, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Bun")).prepare());
+        tomatoBox = new PantryBox(new Vector2(2, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato")));
+        onionBox = new PantryBox(new Vector2(4, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Onion")));
+        lettuceBox = new PantryBox(new Vector2(6, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")));
+        meatBox = new PantryBox(new Vector2(8, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat")));
+        plating1 = new PlatingStation(new Vector2(4, 13));
+        plating2 = new PlatingStation(new Vector2(6, 13));
+        plating3 = new PlatingStation(new Vector2(8, 13));
+        counter1 = new Counter(new Vector2(9, 11));
+        counter2 = new Counter(new Vector2(9, 9));
+        counter3 = new Counter(new Vector2(9, 7));
 
-        interactableList = new ArrayList<>();
-        interactableList.add(pan1);
-        interactableList.add(bin);
-        interactableList.add(bunBox);
-        interactableList.add(platingStation);
+        interactableList = new ArrayList<>(List.of(pan1, pan2, chopping1, chopping2, bin, bunBox, tomatoBox, onionBox, lettuceBox,
+                meatBox, plating1, plating2, plating3, counter1, counter2, counter3));
     }
 
     public void renderMap() {

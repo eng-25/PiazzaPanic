@@ -30,6 +30,8 @@ public class ResourceManager {
     public TextureRegion tomatoUnprepared;
     public TextureRegion bun;
     public TextureRegion windowTex;
+    public TextureRegion emptyStack;
+    public TextureRegion stack;
 
     public BitmapFont font;
 
@@ -61,6 +63,8 @@ public class ResourceManager {
         tomatoUnprepared = atlas.findRegion("tomato_unprepared");
         bun = atlas.findRegion("bun_prepared");
         cook = atlas.findRegion("cook");
+        emptyStack = atlas.findRegion("empty_stack");
+        stack = atlas.findRegion("stack");
 
         // font
         font = new BitmapFont(Gdx.files.internal("assets/fonts/font.fnt"), false);

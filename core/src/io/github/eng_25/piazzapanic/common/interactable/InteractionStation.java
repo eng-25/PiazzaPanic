@@ -13,19 +13,19 @@ public abstract class InteractionStation {
     protected int timeToPrep;
     protected int currentTimer;
     protected final Vector2 position;
-    private final Timer timer = new Timer();
-    protected final TimerTask tickTimerTask;
+    protected final Timer timer = new Timer();
+    protected TimerTask tickTimerTask;
 
     public InteractionStation(Vector2 position, int delay) {
         this.position = position;
         this.timeToPrep = delay;
         this.currentTimer = delay;
-        tickTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                tickTimer();
-            }
-        };
+//        tickTimerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                tickTimer();
+//            }
+//        };
     }
 
     /* TODO: _Sam: define in each class - logic to happen after timer has ticked
@@ -40,12 +40,13 @@ public abstract class InteractionStation {
 
     public void interact() {
         //cook.canMove = false;
-        timer.schedule(new TimerTask() {
+        tickTimerTask = new TimerTask() {
             @Override
             public void run() {
                 tickTimer();
             }
-        }, 0, 1000);
+        };
+        timer.schedule(tickTimerTask, 0, 1000);
     }
 
     /* TODO: _Sam: define in each class - returns true if the interaction should go ahead, add any logic that needs to
