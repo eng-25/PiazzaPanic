@@ -6,8 +6,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
-import io.github.eng_25.piazzapanic.common.interactable.CookingStation;
-import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
+import io.github.eng_25.piazzapanic.common.interactable.*;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
 import java.util.ArrayList;
@@ -20,6 +19,12 @@ public class PiazzaMap {
     private final OrthographicCamera camera;
     private final ArrayList<InteractionStation> interactableList;
     private CookingStation pan1;
+
+    private Bin bin;
+
+    private PantryBox bunBox;
+
+    private PlatingStation platingStation;
 
     public PiazzaMap(ResourceManager rm, OrthographicCamera camera) {
         this.map = rm.gameMap;
@@ -39,9 +44,15 @@ public class PiazzaMap {
 
         //TODO: _Sam: add all stations here, add all to list below
         pan1 = new CookingStation(new Vector2(1, 14), panIngredients, 3);
+        bin = new Bin(new Vector2(0, 14), 0);
+        bunBox = new PantryBox(new Vector2(0, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Bun")));
+        platingStation = new PlatingStation(new Vector2(4,14), 0);
 
         interactableList = new ArrayList<>();
         interactableList.add(pan1);
+        interactableList.add(bin);
+        interactableList.add(bunBox);
+        interactableList.add(platingStation);
     }
 
     public void renderMap() {
