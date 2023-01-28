@@ -40,7 +40,12 @@ public abstract class InteractionStation {
 
     public void interact() {
         //cook.canMove = false;
-        timer.schedule(tickTimerTask, 0, 1000);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                tickTimer();
+            }
+        }, 0, 1000);
     }
 
     /* TODO: _Sam: define in each class - returns true if the interaction should go ahead, add any logic that needs to
