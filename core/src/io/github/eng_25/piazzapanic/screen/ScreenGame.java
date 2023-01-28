@@ -139,26 +139,17 @@ public class ScreenGame extends ScreenBase {
         });
 
 
-        //TODO: remove tests here
-        Ingredient lettuce = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce"));
-        currentCook.getStack().push(lettuce.prepare());
-        Ingredient onion = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Onion"));
-        currentCook.getStack().push(onion.prepare());
-        Ingredient tomato = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato"));
-        currentCook.getStack().push(tomato.prepare());
-
-
         // stack UI
-        //TODO: change first 3 to emptyTex, last to stack tex
-        UITable.add(new Image(resourceManager.burger)).left().row();
-        UITable.add(new Image(resourceManager.salad)).left().row();
-        UITable.add(new Image(resourceManager.buttonDown)).left().row();
-        UITable.add(new Image(resourceManager.closeButton)).left().row();
+        Image emptyStack = new Image(resourceManager.emptyStack);
+        Image stack = new Image(resourceManager.stack);
+        UITable.add(emptyStack).left().row();
+        UITable.add(emptyStack).left().row();
+        UITable.add(emptyStack).left().row();
+        UITable.add(stack).left().row();
         updateStackTextures();
         adjustStackUIPosition();
     }
 
-    //TODO: check this works properly with stack order
     private void updateStackTextures() {
         // set up list to determine which parts of stack UI are filled and which should be empty
         ArrayList<BaseIngredient> stackDisplayList = new ArrayList<>();
@@ -170,12 +161,12 @@ public class ScreenGame extends ScreenBase {
         }
 
         // if part of the stack was empty, use the empty texture - otherwise scale
-        //TODO: change buttonUp here to empty tex
         Array<Cell> cells = UITable.getCells();
         for (int i = 1; i < 4; i++) { // 3 stack images
             BaseIngredient ing = stackDisplayList.get(3-i);
-            TextureRegion tex = ing == null ? resourceManager.buttonUp : ing.getTexture();
+            TextureRegion tex = ing == null ? resourceManager.emptyStack : ing.getTexture();
             Image texScaled = new Image(tex);
+            texScaled.setSize(64, 64);
             cells.get(i).setActor(texScaled);
         }
     }

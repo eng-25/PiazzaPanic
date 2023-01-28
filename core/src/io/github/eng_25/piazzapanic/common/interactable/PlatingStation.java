@@ -17,8 +17,8 @@ public class PlatingStation extends InteractionStation {
     private Cook attachedCook;
     private Dish output;
 
-    public PlatingStation(Vector2 position, int prepTime) {
-        super(position, prepTime);
+    public PlatingStation(Vector2 position) {
+        super(position, 0);
         attachedCook = null;
         output = null;
         currentRecipe = new ArrayList<>();

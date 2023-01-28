@@ -4,128 +4,128 @@ size: 1024, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-bin
-  rotate: false
-  xy: 922, 266
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
 bun_prepared
   rotate: false
-  xy: 820, 147
+  xy: 820, 103
   size: 64, 43
   orig: 64, 43
   offset: 0, 0
   index: -1
 burger
   rotate: false
-  xy: 820, 192
+  xy: 754, 2
   size: 64, 44
   orig: 64, 44
   offset: 0, 0
   index: -1
 button_down
   rotate: false
-  xy: 754, 300
+  xy: 754, 308
   size: 200, 99
   orig: 200, 99
   offset: 0, 0
   index: -1
 button_up
   rotate: false
-  xy: 754, 401
+  xy: 754, 409
   size: 200, 101
   orig: 200, 101
   offset: 0, 0
   index: -1
 close_button
   rotate: false
-  xy: 754, 238
+  xy: 754, 246
   size: 100, 60
   orig: 100, 60
   offset: 0, 0
   index: -1
 cook
   rotate: false
-  xy: 956, 272
+  xy: 922, 274
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: -1
+empty_stack
+  rotate: false
+  xy: 754, 114
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 lettuce_prepared
   rotate: false
-  xy: 856, 248
+  xy: 856, 256
   size: 64, 50
   orig: 64, 50
   offset: 0, 0
   index: -1
 lettuce_unprepared
   rotate: false
-  xy: 754, 56
+  xy: 820, 196
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
 meat_prepared
   rotate: false
-  xy: 754, 8
+  xy: 820, 148
   size: 64, 46
   orig: 64, 46
   offset: 0, 0
   index: -1
 meat_unprepared
   rotate: false
-  xy: 754, 106
+  xy: 956, 314
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 onion_prepared
   rotate: false
-  xy: 820, 105
+  xy: 820, 61
   size: 64, 40
   orig: 64, 40
   offset: 0, 0
   index: -1
 onion_unprepared
   rotate: false
-  xy: 956, 372
+  xy: 956, 380
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 salad
   rotate: false
-  xy: 956, 306
+  xy: 754, 48
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 stack
   rotate: false
-  xy: 754, 172
+  xy: 754, 180
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tomato_prepared
   rotate: false
-  xy: 820, 69
+  xy: 820, 25
   size: 64, 34
   orig: 64, 34
   offset: 0, 0
   index: -1
 tomato_unprepared
   rotate: false
-  xy: 956, 438
+  xy: 956, 446
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 window
   rotate: false
-  xy: 2, 2
+  xy: 2, 10
   size: 750, 500
   orig: 750, 500
   offset: 0, 0
