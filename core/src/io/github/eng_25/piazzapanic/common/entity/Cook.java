@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import io.github.eng_25.piazzapanic.common.ingredient.BaseIngredient;
-import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.SizedStack;
 
