@@ -56,7 +56,9 @@ public class Cook extends Actor {
         float oldXPos = position.x;
         float oldYPos = position.y;
 
-        if (!canMove) { return; }
+        if (!canMove) {
+            return;
+        }
         /*
          * first line checks if the cook is within the bounds of the kitchen
          * the rest checks where the cook is with respect of the pantry boxes not
@@ -68,17 +70,17 @@ public class Cook extends Actor {
         // ---------------------------------left + right (x)
         if ((position.x < 0 && movement.x < 0) // out of bounds left
                 || ((((position.x < 0.9 || (position.x < 2.9 && position.x > 1.3)
-                || (position.x > 3.3 && position.x < 4.9) || (position.x > 5.3 && position.x < 6.9)
-                || (position.x > 7.3))
-                && (position.y > 0.8 && position.y < 1.8))) && movement.x < 0)) {
-            resetX();
+                        || (position.x > 3.3 && position.x < 4.9) || (position.x > 5.3 && position.x < 6.9)
+                        || (position.x > 7.3))
+                        && (position.y > 0.8 && position.y < 1.8))) && movement.x < 0)) {
+            // resetX();
             position.x = oldXPos;
         } else if ((position.x > 8.5 && movement.x > 0) // out of bounds right
                 || ((((position.x < 0.8 || (position.x < 2.8 && position.x > 1.2)
-                || (position.x > 3.2 && position.x < 4.8) || (position.x > 5.2 && position.x < 6.8)
-                || (position.x > 7.2))
-                && (position.y > 0.8 && position.y < 1.8))) && movement.x > 0)) {
-            resetX();
+                        || (position.x > 3.2 && position.x < 4.8) || (position.x > 5.2 && position.x < 6.8)
+                        || (position.x > 7.2))
+                        && (position.y > 0.8 && position.y < 1.8))) && movement.x > 0)) {
+            // resetX();
             position.x = oldXPos;
         } else {
             position.x += xChange; // moves on the x axis
@@ -86,19 +88,19 @@ public class Cook extends Actor {
         // ------------------------------------------down + up (y)
         if ((position.y < 0 && movement.y < 0) // out of bounds down
                 || ((position.y < 1.9 && position.y > 0.9)
-                && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
-                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
-                || (position.x > 7.3 && position.x < 8.8))
-                && movement.y < 0)) {
-            resetY();
+                        && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
+                                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
+                                || (position.x > 7.3 && position.x < 8.8))
+                        && movement.y < 0)) {
+            // resetY();
             position.y = oldYPos;
         } else if ((position.y > 13 && movement.y > 0) // out of bounds up
                 || ((position.y > 0.7 && position.y < 1.8)
-                && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
-                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
-                || (position.x > 7.3 && position.x < 8.8))
-                && movement.y > 0)) {
-            resetY();
+                        && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
+                                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
+                                || (position.x > 7.3 && position.x < 8.8))
+                        && movement.y > 0)) {
+            // resetY();
             position.y = oldYPos;
         } else {
             position.y += yChange; // moves on the y axis
