@@ -36,18 +36,15 @@ public class Customer {
         position = new Vector2(16, 0);
     }
 
-    public boolean tick(float delta, SpriteBatch batch) { // returns true if timer has expired
+    public void tick(float delta, SpriteBatch batch) { // returns true if timer has expired
         renderCustomer(batch);
         if (shouldTickTimer) {
             timer-=delta;
 
             if (timer <= 0) {
-                // reputation
-                //receiveDish();
-                //return true;
+                // lose reputation
             }
         }
-        return false;
     }
 
     public void receiveDish() {

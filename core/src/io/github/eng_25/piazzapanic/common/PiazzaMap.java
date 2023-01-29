@@ -94,9 +94,7 @@ public class PiazzaMap {
         // counter and customer logic
         Arrays.stream(counters).forEach(counter -> {
             if (counter.hasCustomer()) {
-                if (counter.getCustomer().tick(delta, batch)) {
-                    counter.removeCustomer();
-                }
+                counter.getCustomer().tick(delta, batch);
             }
         });
     }
