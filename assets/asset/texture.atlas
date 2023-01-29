@@ -6,16 +6,16 @@ filter: Nearest, Nearest
 repeat: none
 bar_bg
   rotate: false
-  xy: 922, 256
-  size: 30, 16
-  orig: 30, 16
+  xy: 820, 15
+  size: 30, 8
+  orig: 30, 8
   offset: 0, 0
   index: -1
 bar_fg
   rotate: false
-  xy: 820, 7
-  size: 30, 16
-  orig: 30, 16
+  xy: 856, 246
+  size: 30, 8
+  orig: 30, 8
   offset: 0, 0
   index: -1
 bun_prepared
@@ -46,18 +46,18 @@ button_up
   orig: 200, 101
   offset: 0, 0
   index: -1
-cook
-  rotate: false
-  xy: 922, 274
-  size: 16, 32
-  orig: 16, 32
-  offset: 0, 0
-  index: -1
 close_button
   rotate: false
   xy: 754, 246
   size: 100, 60
   orig: 100, 60
+  offset: 0, 0
+  index: -1
+cook
+  rotate: false
+  xy: 922, 274
+  size: 16, 32
+  orig: 16, 32
   offset: 0, 0
   index: -1
 customer
@@ -69,7 +69,7 @@ customer
   index: -1
 empty_stack
   rotate: false
-  xy: 754, 114
+  xy: 956, 380
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -97,7 +97,7 @@ meat_prepared
   index: -1
 meat_unprepared
   rotate: false
-  xy: 956, 314
+  xy: 754, 180
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -111,21 +111,21 @@ onion_prepared
   index: -1
 onion_unprepared
   rotate: false
-  xy: 956, 380
+  xy: 754, 114
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-salad_64x64
+salad
   rotate: false
-  xy: 754, 48
+  xy: 956, 314
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 stack
   rotate: false
-  xy: 754, 180
+  xy: 956, 446
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -139,7 +139,7 @@ tomato_prepared
   index: -1
 tomato_unprepared
   rotate: false
-  xy: 956, 446
+  xy: 754, 48
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
