@@ -27,11 +27,13 @@ public class PlatingStation extends InteractionStation {
     private void checkForDish() {
         output = Recipes.checkValidRecipe(currentRecipe);
     }
+
+    private void clearStation() { currentRecipe.clear(); }
     @Override
     public void finishInteract() {
         checkForDish();
         if (output == null && currentRecipe.size() >= 3) {
-            currentRecipe.clear();
+            clearStation();
         } else {
             if (!attachedCook.isStackFull() && output != null) { // double check space in stack for Dish output
                 attachedCook.pushStack(output);

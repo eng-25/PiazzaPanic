@@ -16,6 +16,10 @@ public class Dish extends BaseIngredient {
         return new Dish(dish.getName(), dish.getTexture());
     }
 
+    public static Dish getDish(String mapName) { // statically returns copy of given dish name
+        return copyOf(DISH_MAP.get(mapName));
+    }
+
     // Dish only has a single texture
     private TextureRegion texture;
 

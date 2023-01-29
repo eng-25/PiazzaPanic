@@ -1,6 +1,5 @@
 package io.github.eng_25.piazzapanic.common.ingredient;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
@@ -20,6 +19,10 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
 
     public static Ingredient copyOf(Ingredient ing) {
         return new Ingredient(ing.getName(), ing.textures[0], ing.textures[1]);
+    }
+
+    public static Ingredient getIngredient(String mapName) { // statically returns a copy of given ingredient
+        return copyOf(INGREDIENT_MAP.get(mapName));
     }
 
     private boolean isPrepared;

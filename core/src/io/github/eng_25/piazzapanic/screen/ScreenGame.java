@@ -18,8 +18,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.common.PiazzaMap;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
+import io.github.eng_25.piazzapanic.common.entity.Customer;
 import io.github.eng_25.piazzapanic.common.ingredient.BaseIngredient;
+import io.github.eng_25.piazzapanic.common.ingredient.Dish;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
+import io.github.eng_25.piazzapanic.common.interactable.Counter;
 import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
@@ -27,6 +30,9 @@ import io.github.eng_25.piazzapanic.window.WindowGuide;
 import io.github.eng_25.piazzapanic.window.WindowPause;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * The screen for the main game itself
@@ -36,18 +42,24 @@ public class ScreenGame extends ScreenBase {
     private final ScreenViewport UIViewport;
     private final Table UITable;
     private final Stage UIStage;
-    private final Cook cook1;
-    private final Cook cook2;
+    private final Cook[] cooks;
     private Cook currentCook;
     private final PiazzaMap map;
+    private boolean interactHappened; // to prevent holding of interact key causing multiple calls
+    private float gameTimer; // game timer in seconds
+    private int customerCount; // number of customers that have been created
+    private int reputationPoints; // reputation points left
+    private int customersWaiting; // used in case there are no free counters when a new customer is added
 
     private WindowPause pauseWindow;
     private WindowGuide guideWindow;
 
-    private boolean interactHappened;
-
-    public static final float WINDOW_SIZE = 0.6f;
-
+    public static final float WINDOW_SIZE = 0.6f; // window size relative to screen size
+    public static final int TOTAL_CUSTOMERS = 5; // number of customers throughout mode
+    public static final int COOK_COUNT = 2; // total number of cooks
+    public static final int REPUTATION_AMOUNT = 3; // how many reputation points initially
+    public static final int CUSTOMER_INTERVAL = 60; // interval in seconds between customers
+    public static final int CUSTOMER_TIMER = 60; // time before reputation is lost, customer still never leaves due to time
 
     /**
      * Uses the height and width of previous screen to setup viewport initially
@@ -67,9 +79,11 @@ public class ScreenGame extends ScreenBase {
         UIStage.addActor(UITable);
 
         // cook setup
-        cook1 = new Cook(resourceManager, new Vector2(0, 0));
-        cook2 = new Cook(resourceManager, new Vector2(8, 8));
-        currentCook = cook1;
+        cooks = new Cook[COOK_COUNT];
+        for (int i=0; i<COOK_COUNT; i++) {
+            cooks[i] = Cook.createCook(2*i, 2*i, resourceManager.cook);
+        }
+        currentCook = cooks[0];
 
         // map
         map = new PiazzaMap(rm, camera);
@@ -186,7 +200,7 @@ public class ScreenGame extends ScreenBase {
      */
     private void switchCooks() {
         currentCook.stopMoving();
-        currentCook = currentCook == cook1 ? cook2 : cook1;
+        currentCook = currentCook == cooks[0] ? cooks[1] : cooks[0];
     }
 
     private void adjustStackUIPosition() {
@@ -205,11 +219,46 @@ public class ScreenGame extends ScreenBase {
      */
     private void addActors() {
 
-        stage.addActor(cook1);
-        stage.addActor(cook2);
+        Arrays.stream(cooks).forEach(cook -> stage.addActor(cook));
 
         UIStage.addActor(guideWindow);
         UIStage.addActor(pauseWindow);
+    }
+
+    private void updateTimer(float timePassed) {
+        float oldTime = gameTimer;
+        gameTimer+=timePassed; // new time
+
+        // check for events
+        // customer events
+        if (customersWaiting > 0) { // if a customer was left waiting previously, attempt to make a new customer regardless of timer
+            for (int i = 0; i < customersWaiting; i++) { // use a loop in case this stacks up e.g. player might not serve anyone for multiple minutes
+                addCustomer();
+            }
+        }
+        // if next minute entered since last call, new customer created
+        if (Math.floor(oldTime/CUSTOMER_INTERVAL) < Math.floor(gameTimer/CUSTOMER_INTERVAL)
+                && customerCount < TOTAL_CUSTOMERS) {
+            addCustomer();
+        }
+    }
+
+    private void addCustomer() {
+        customerCount++;
+        Counter toAttach = map.getFreeCounter();
+        if (toAttach == null) { // if no free counter
+            customersWaiting++;
+            return;
+        }
+        Customer customer = new Customer(getRandomDish(), CUSTOMER_TIMER);
+        toAttach.attachCustomer(customer);
+    }
+
+    private Dish getRandomDish() {
+        Object[] dishKeys = Dish.DISH_MAP.keySet().toArray();
+        int numOfDishes = dishKeys.length;
+        int randomDishIndex = new Random().nextInt(numOfDishes);
+        return Dish.getDish((String) dishKeys[randomDishIndex]);
     }
 
     @Override
@@ -219,6 +268,12 @@ public class ScreenGame extends ScreenBase {
         inputMultiplexer.addProcessor(this);
         inputMultiplexer.addProcessor(UIStage);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        gameTimer = 0;
+        customerCount = 0;
+        customersWaiting = 0;
+        reputationPoints = REPUTATION_AMOUNT;
+        addCustomer();
     }
 
     @Override
@@ -231,23 +286,23 @@ public class ScreenGame extends ScreenBase {
         Gdx.gl.glClearColor(0, 0, 0, 0.1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        updateStackTextures();
+        updateTimer(delta);
 
-        map.renderMap((SpriteBatch) stage.getBatch());
+        // render map and progress bars
+        map.renderMap((SpriteBatch) stage.getBatch(), delta);
 
         // act and draw main stage
         stage.act(delta);
         stage.draw();
         adjustCam();
 
+        // stack UI
+        updateStackTextures();
+
         // UI stage
         UIViewport.apply();
         UIStage.act(delta);
         UIStage.draw();
-
-        //System.out.println(currentCook.getStack().size());
-        // System.out.println(currentCook.getPosition());
-        // System.out.println(currentCook.peekStack().getName());
     }
 
     @Override

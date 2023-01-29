@@ -19,11 +19,11 @@ public class Cook extends Actor {
     private boolean isInteracting;
     TextureRegion texture;
 
-    public Cook(ResourceManager rm, Vector2 originalPos) {
+    public Cook(TextureRegion texture, Vector2 originalPos) {
         stack = new SizedStack<>(3);
         this.position = originalPos;
         this.movement = new Vector2(0, 0);
-        texture = rm.cook;
+        this.texture = texture;
         canMove = true;
         isInteracting = false;
     }
@@ -161,6 +161,10 @@ public class Cook extends Actor {
 
     public boolean isInteracting() {
         return isInteracting;
+    }
+
+    public static Cook createCook(int startX, int startY, TextureRegion texture) {
+        return new Cook(texture, new Vector2(startX, startY));
     }
 
 }

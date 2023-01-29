@@ -34,12 +34,7 @@ public abstract class InteractionStation {
     }
 
     /* TODO: _Sam: define in each class - logic to happen after timer has ticked
-    bin - pop from stack
     counter - pop from stack, but make sure Dish is stored as field somewhere
-    PantryBox - push 'Ingredient.copyOf(output)' to stack
-    PlatingStation - pop from stack, add it to list, then check the list with the Recipes method
-        if the Recipes method returns a Dish, push that onto the same cook's stack
-        if returns null, do nothing
      */
     abstract public void finishInteract(); // define in each child class
 
@@ -57,15 +52,10 @@ public abstract class InteractionStation {
 
     /* TODO: _Sam: define in each class - returns true if the interaction should go ahead, add any logic that needs to
             happen BEFORE interaction (e.g. removing from stack)
-    e.g. in CookingStation, returns true if the TOP of the cook's stack had an item in the "validItems" list
-    bin - if stack not empty, true
     counter - if TOP of cook's stack (use peek to check) is instanceof Dish, return true (make sure to pop stack)
-    PantryBox - check stack !isFull(), return true
-    PlatingStation - if instanceof Ingredient and .isPrepared(), return true (attach cook maybe, try first using currentCook?)
     */
 
     abstract public boolean canInteract(Cook cook);
-
 
 
     private void tickTimer() {
@@ -89,15 +79,15 @@ public abstract class InteractionStation {
     public void renderProgress(SpriteBatch batch, float tileSize) {
         if (isWorking && timeToPrep > 0) { // only render progress bar on stations which have a prep time
             batch.begin();
-            float barX = progressBar.getRegionWidth()/tileSize;
-            float barY = progressBar.getRegionHeight()/tileSize;
-            float xPos = position.x+((1-barX)/2f);
-            float yPos = position.y+2f;
+            float barX = progressBar.getRegionWidth() / tileSize;
+            float barY = progressBar.getRegionHeight() / tileSize;
+            float xPos = position.x + ((1 - barX) / 2f);
+            float yPos = position.y + 2f;
             // bg
             batch.draw(progressBarBg, xPos, yPos, barX, barY);
             // bar
-            float progress = 1-(float)currentTimer/timeToPrep;
-            batch.draw(progressBar, xPos, yPos, barX*progress, barY);
+            float progress = 1 - (float) currentTimer / timeToPrep;
+            batch.draw(progressBar, xPos, yPos, barX * progress, barY);
             batch.end();
         }
     }
