@@ -30,6 +30,11 @@ public class ResourceManager {
     public TextureRegion tomatoUnprepared;
     public TextureRegion bun;
     public TextureRegion windowTex;
+    public TextureRegion emptyStack;
+    public TextureRegion stack;
+    public TextureRegion customer;
+    public TextureRegion barBg;
+    public TextureRegion barFg;
 
     public BitmapFont font;
 
@@ -61,6 +66,11 @@ public class ResourceManager {
         tomatoUnprepared = atlas.findRegion("tomato_unprepared");
         bun = atlas.findRegion("bun_prepared");
         cook = atlas.findRegion("cook");
+        emptyStack = atlas.findRegion("empty_stack");
+        stack = atlas.findRegion("stack");
+        customer = atlas.findRegion("customer");
+        barBg = atlas.findRegion("bar_bg");
+        barFg = atlas.findRegion("bar_fg");
 
         // font
         font = new BitmapFont(Gdx.files.internal("assets/fonts/font.fnt"), false);

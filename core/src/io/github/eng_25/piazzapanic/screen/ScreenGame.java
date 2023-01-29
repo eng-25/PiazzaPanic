@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,9 +18,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.common.PiazzaMap;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
-import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
 import io.github.eng_25.piazzapanic.common.ingredient.BaseIngredient;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
+import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 import io.github.eng_25.piazzapanic.window.WindowGuide;
@@ -38,7 +39,7 @@ public class ScreenGame extends ScreenBase {
     private final Cook cook1;
     private final Cook cook2;
     private Cook currentCook;
-    private PiazzaMap map;
+    private final PiazzaMap map;
 
     private WindowPause pauseWindow;
     private WindowGuide guideWindow;
@@ -51,8 +52,8 @@ public class ScreenGame extends ScreenBase {
     /**
      * Uses the height and width of previous screen to setup viewport initially
      *
-     * @param game   main game class
-     * @param rm     ResourceManager instance
+     * @param game main game class
+     * @param rm   ResourceManager instance
      */
     public ScreenGame(PiazzaPanic game, ResourceManager rm) {
         super(game, rm, new ExtendViewport(16, 9, new OrthographicCamera()));
@@ -69,7 +70,6 @@ public class ScreenGame extends ScreenBase {
         cook1 = new Cook(resourceManager, new Vector2(0, 0));
         cook2 = new Cook(resourceManager, new Vector2(8, 8));
         currentCook = cook1;
-        // cook1.pushStack(Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat"))); // remove later <- removed to test pantryboxes
 
         // map
         map = new PiazzaMap(rm, camera);
@@ -140,41 +140,35 @@ public class ScreenGame extends ScreenBase {
         });
 
 
-        //TODO: remove tests here
-        Ingredient lettuce = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce"));
-        currentCook.getStack().push(lettuce.prepare());
-        Ingredient onion = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Onion"));
-        currentCook.getStack().push(onion.prepare());
-        Ingredient tomato = Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato"));
-        currentCook.getStack().push(tomato.prepare());
-
-
         // stack UI
-        //TODO: change first 3 to emptyTex, last to stack tex
-        UITable.add(new Image(resourceManager.burger)).left().row();
-        UITable.add(new Image(resourceManager.salad)).left().row();
-        UITable.add(new Image(resourceManager.buttonDown)).left().row();
-        UITable.add(new Image(resourceManager.closeButton)).left().row();
+        Image emptyStack = new Image(resourceManager.emptyStack);
+        Image stack = new Image(resourceManager.stack);
+        stack.scaleBy(1.5f);
+        UITable.add(emptyStack).left().row();
+        UITable.add(emptyStack).left().row();
+        UITable.add(emptyStack).left().row();
+        UITable.add(stack).left().row();
         updateStackTextures();
         adjustStackUIPosition();
     }
 
-    //TODO: check this works properly with stack order
     private void updateStackTextures() {
         // set up list to determine which parts of stack UI are filled and which should be empty
         ArrayList<BaseIngredient> stackDisplayList = new ArrayList<>();
         for (Object i : currentCook.getStack().toArray()) {
             stackDisplayList.add((BaseIngredient) i);
         }
-        while (stackDisplayList.size() < 3) { stackDisplayList.add(null); }
+        while (stackDisplayList.size() < 3) {
+            stackDisplayList.add(null);
+        }
 
         // if part of the stack was empty, use the empty texture - otherwise scale
-        //TODO: change buttonUp here to empty tex
         Array<Cell> cells = UITable.getCells();
-        for (int i=1; i<4; i++) { // 3 stack images
-            BaseIngredient ing = stackDisplayList.get(i-1);
-            TextureRegion tex = ing == null ? resourceManager.buttonUp : ing.getTexture();
+        for (int i = 1; i < 4; i++) { // 3 stack images
+            BaseIngredient ing = stackDisplayList.get(3-i);
+            TextureRegion tex = ing == null ? resourceManager.emptyStack : ing.getTexture();
             Image texScaled = new Image(tex);
+            texScaled.scaleBy(1.5f);
             cells.get(i).setActor(texScaled);
         }
     }
@@ -196,11 +190,11 @@ public class ScreenGame extends ScreenBase {
     }
 
     private void adjustStackUIPosition() {
-        float padLeft = UIViewport.getScreenWidth()*0.1f;
-        float initialPadTop = UIViewport.getScreenHeight()*0.4f;
-        float padTop = UIViewport.getScreenHeight()*0.1f;
+        float padLeft = UIViewport.getScreenWidth() * 0.1f;
+        float initialPadTop = UIViewport.getScreenHeight() * 0.4f;
+        float padTop = UIViewport.getScreenHeight() * 0.1f;
         UITable.getCells().get(1).padLeft(padLeft).padTop(initialPadTop);
-        for (int i=2; i<5; i++) {
+        for (int i = 2; i < 5; i++) {
             UITable.getCells().get(i).padLeft(padLeft).padTop(padTop);
         }
     }
@@ -225,7 +219,6 @@ public class ScreenGame extends ScreenBase {
         inputMultiplexer.addProcessor(this);
         inputMultiplexer.addProcessor(UIStage);
         Gdx.input.setInputProcessor(inputMultiplexer);
-        currentCook.getStack().forEach(i -> System.out.println(i.getName()));
     }
 
     @Override
@@ -235,10 +228,12 @@ public class ScreenGame extends ScreenBase {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0.1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        map.renderMap();
+        updateStackTextures();
+
+        map.renderMap((SpriteBatch) stage.getBatch());
 
         // act and draw main stage
         stage.act(delta);
@@ -250,6 +245,7 @@ public class ScreenGame extends ScreenBase {
         UIStage.act(delta);
         UIStage.draw();
 
+        //System.out.println(currentCook.getStack().size());
         // System.out.println(currentCook.getPosition());
         // System.out.println(currentCook.peekStack().getName());
     }
@@ -303,7 +299,8 @@ public class ScreenGame extends ScreenBase {
                 // find nearest InteractionStation to current cook
                 InteractionStation toInteractWith = map.checkInteraction(currentCook);
                 if (toInteractWith == null) { break; }
-                if (toInteractWith.canInteract(currentCook) && !interactHappened) { // check if interaction is valid
+                if (toInteractWith.canInteract(currentCook) && !interactHappened
+                        && !toInteractWith.isWorking() && !currentCook.isInteracting()) { // check if interaction is valid
                     interactHappened = true;
                     toInteractWith.interact();
                 }

@@ -2,6 +2,7 @@ package io.github.eng_25.piazzapanic.common.interactable;
 
 import com.badlogic.gdx.math.Vector2;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
+import io.github.eng_25.piazzapanic.common.ingredient.Dish;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.common.ingredient.Recipes;
 
@@ -14,31 +15,40 @@ public class PlatingStation extends InteractionStation {
     private List<Ingredient> currentRecipe;
 
     private Cook attachedCook;
+    private Dish output;
 
-    public PlatingStation(Vector2 position, int prepTime) {
-        super(position, prepTime);
+    public PlatingStation(Vector2 position) {
+        super(position, 0);
         attachedCook = null;
+        output = null;
         currentRecipe = new ArrayList<>();
+    }
+
+    private void checkForDish() {
+        output = Recipes.checkValidRecipe(currentRecipe);
     }
     @Override
     public void finishInteract() {
-        if (currentRecipe == Recipes.SALAD.getIngredientList()) {
-            attachedCook.pushStack(Recipes.SALAD.getDish());
-        } if (currentRecipe == Recipes.BURGER.getIngredientList()) {
-            attachedCook.pushStack(Recipes.BURGER.getDish());
+        checkForDish();
+        if (output == null && currentRecipe.size() >= 3) {
+            currentRecipe.clear();
+        } else {
+            if (!attachedCook.isStackFull() && output != null) { // double check space in stack for Dish output
+                attachedCook.pushStack(output);
+            }
         }
     }
 
     @Override
     public boolean canInteract(Cook cook) {
-        for (int i = 0; i < 3; i++) {
-            System.out.println(cook.peekStack());
-            if (cook.peekStack() instanceof Ingredient && ((Ingredient) cook.peekStack()).isPrepared()) {
-                currentRecipe.add((Ingredient) cook.popStack());
+        if (isWorking()) { return false; }
+        if (cook.peekStack() instanceof Ingredient) {
+            if (((Ingredient) cook.peekStack()).isPrepared()) {
+                attachedCook = cook;
+                currentRecipe.add((Ingredient) attachedCook.popStack());
+                return true;
             }
-        } if (!(cook.isStackEmpty())) {
-            return false;
-        } attachedCook = cook;
-        return true;
+        }
+        return false;
     }
 }
