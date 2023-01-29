@@ -15,11 +15,13 @@ public abstract class InteractionStation {
     protected final Vector2 position;
     protected final Timer timer = new Timer();
     protected TimerTask tickTimerTask;
+    private boolean isWorking;
 
     public InteractionStation(Vector2 position, int delay) {
         this.position = position;
         this.timeToPrep = delay;
         this.currentTimer = delay;
+        isWorking = false;
 //        tickTimerTask = new TimerTask() {
 //            @Override
 //            public void run() {
@@ -40,6 +42,7 @@ public abstract class InteractionStation {
 
     public void interact() {
         //cook.canMove = false;
+        isWorking = true;
         tickTimerTask = new TimerTask() {
             @Override
             public void run() {
@@ -66,6 +69,7 @@ public abstract class InteractionStation {
         currentTimer -= 1;
         if (currentTimer <= 0) {
             tickTimerTask.cancel();
+            isWorking = false;
             currentTimer = timeToPrep;
             finishInteract();
         }
@@ -75,4 +79,7 @@ public abstract class InteractionStation {
         return position;
     }
 
+    public boolean isWorking() {
+        return isWorking;
+    }
 }

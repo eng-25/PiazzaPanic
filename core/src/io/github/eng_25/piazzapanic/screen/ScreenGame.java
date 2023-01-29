@@ -142,6 +142,7 @@ public class ScreenGame extends ScreenBase {
         // stack UI
         Image emptyStack = new Image(resourceManager.emptyStack);
         Image stack = new Image(resourceManager.stack);
+        stack.scaleBy(1.5f);
         UITable.add(emptyStack).left().row();
         UITable.add(emptyStack).left().row();
         UITable.add(emptyStack).left().row();
@@ -166,7 +167,7 @@ public class ScreenGame extends ScreenBase {
             BaseIngredient ing = stackDisplayList.get(3-i);
             TextureRegion tex = ing == null ? resourceManager.emptyStack : ing.getTexture();
             Image texScaled = new Image(tex);
-            texScaled.setSize(64, 64);
+            texScaled.scaleBy(1.5f);
             cells.get(i).setActor(texScaled);
         }
     }
@@ -297,7 +298,8 @@ public class ScreenGame extends ScreenBase {
                 // find nearest InteractionStation to current cook
                 InteractionStation toInteractWith = map.checkInteraction(currentCook);
                 if (toInteractWith == null) { break; }
-                if (toInteractWith.canInteract(currentCook) && !interactHappened) { // check if interaction is valid
+                if (toInteractWith.canInteract(currentCook) && !interactHappened
+                        && !toInteractWith.isWorking() && !currentCook.isInteracting()) { // check if interaction is valid
                     interactHappened = true;
                     toInteractWith.interact();
                 }

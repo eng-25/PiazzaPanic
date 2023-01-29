@@ -41,6 +41,7 @@ public class PlatingStation extends InteractionStation {
 
     @Override
     public boolean canInteract(Cook cook) {
+        if (isWorking()) { return false; }
         if (cook.peekStack() instanceof Ingredient) {
             if (((Ingredient) cook.peekStack()).isPrepared()) {
                 attachedCook = cook;
