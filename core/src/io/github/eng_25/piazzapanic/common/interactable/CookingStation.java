@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * If the item at the top of the stack is able to be used on the cooking station,
- * it will push the prepared version onto the stack after a specified preparation time
+ * it will push the prepared version onto the stack after a specified preparation time.
  */
 public class CookingStation extends InteractionStation {
 
@@ -17,6 +17,12 @@ public class CookingStation extends InteractionStation {
     private Cook attachedCook;
     private Ingredient toPrep;
 
+    /**
+     * Creates a cooking station with a position, a list of valid inputs and a preparation time.
+     * @param position The position of the cooking station.
+     * @param validInputs A list of items that the cooking station will interact with.
+     * @param prepTime The time taken for the action of the cooking station to be completed.
+     */
     public CookingStation(Vector2 position, List<Ingredient> validInputs, int prepTime) {
         super(position, prepTime);
         this.validInputs = validInputs;
@@ -25,8 +31,8 @@ public class CookingStation extends InteractionStation {
     }
 
     /**
-     * If interaction is allowed, the prepared ingredient is pushed to the cook's stack
-     * They are also allowed to move after interaction is completed
+     * If interaction is allowed, the prepared ingredient is pushed to the cook's stack.
+     * They are also allowed to move after interaction is completed.
      */
     @Override
     public void finishInteract() {
@@ -36,9 +42,9 @@ public class CookingStation extends InteractionStation {
 
     /**
      * Checks if the top of the cook's stack is an ingredient that the cooking station can interact with.
-     * This is true if it is an ingredient, non-prepared and an ingredient specified by the list validInputs
-     * @param cook
-     * @return whether interaction is valid.
+     * This is true if it is an ingredient, non-prepared and an ingredient specified by the list validInputs.
+     * @param cook The cook interacting with the cooking station.
+     * @return Whether interaction is valid.
      */
     @Override
     public boolean canInteract(Cook cook) {

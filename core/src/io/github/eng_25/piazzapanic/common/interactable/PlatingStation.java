@@ -20,6 +20,10 @@ public class PlatingStation extends InteractionStation {
     private Cook attachedCook;
     private Dish output;
 
+    /**
+     * Creates an instance of a plating station with a position.
+     * @param position The position of the plating station.
+     */
     public PlatingStation(Vector2 position) {
         super(position, 0);
         attachedCook = null;
@@ -35,7 +39,7 @@ public class PlatingStation extends InteractionStation {
     }
 
     /**
-     * Adds item to the stack if it is a valid recipe
+     * Adds item to the stack if it is a valid recipe.
      */
     @Override
     public void finishInteract() {
@@ -52,9 +56,9 @@ public class PlatingStation extends InteractionStation {
     }
 
     /**
-     * Adds item at the top of the stack if it is a prepared ingredient to the plating station
-     * @param cook
-     * @return whether interaction is valid
+     * Adds item at the top of the stack if it is a prepared ingredient to the plating station.
+     * @param cook The cook interacting with plating station.
+     * @return Whether interaction is valid.
      */
     @Override
     public boolean canInteract(Cook cook) {
