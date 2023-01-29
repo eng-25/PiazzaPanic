@@ -4,6 +4,20 @@ size: 1024, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+bar_bg
+  rotate: false
+  xy: 922, 256
+  size: 30, 16
+  orig: 30, 16
+  offset: 0, 0
+  index: -1
+bar_fg
+  rotate: false
+  xy: 820, 7
+  size: 30, 16
+  orig: 30, 16
+  offset: 0, 0
+  index: -1
 bun_prepared
   rotate: false
   xy: 820, 103
@@ -32,6 +46,13 @@ button_up
   orig: 200, 101
   offset: 0, 0
   index: -1
+cook
+  rotate: false
+  xy: 922, 274
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
 close_button
   rotate: false
   xy: 754, 246
@@ -39,9 +60,9 @@ close_button
   orig: 100, 60
   offset: 0, 0
   index: -1
-cook
+customer
   rotate: false
-  xy: 922, 274
+  xy: 940, 274
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
@@ -95,7 +116,7 @@ onion_unprepared
   orig: 64, 64
   offset: 0, 0
   index: -1
-salad
+salad_64x64
   rotate: false
   xy: 754, 48
   size: 64, 64

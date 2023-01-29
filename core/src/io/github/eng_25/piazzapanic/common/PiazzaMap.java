@@ -1,6 +1,7 @@
 package io.github.eng_25.piazzapanic.common;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PiazzaMap {
+
+    public static final float TILE_SIZE = 32f;
 
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -40,7 +43,7 @@ public class PiazzaMap {
         this.map = rm.gameMap;
         this.camera = camera;
         // setup TiledMap with 1/32 as tiles are 32x32px
-        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / TILE_SIZE);
 
         // interaction stations
         final List<Ingredient> panIngredients = List.of(
@@ -53,10 +56,10 @@ public class PiazzaMap {
         );
 
         //TODO: _Sam: add all stations here, add all to list below
-        pan1 = new CookingStation(new Vector2(1, 13), panIngredients, 3);
-        pan2 = new CookingStation(new Vector2(3, 13), panIngredients, 3);
-        chopping1 = new CookingStation(new Vector2(5, 13), choppingIngredients, 2);
-        chopping2 = new CookingStation(new Vector2(7, 13), choppingIngredients, 2);
+        pan1 = new CookingStation(new Vector2(1, 13), panIngredients, 30);
+        pan2 = new CookingStation(new Vector2(3, 13), panIngredients, 30);
+        chopping1 = new CookingStation(new Vector2(5, 13), choppingIngredients, 15);
+        chopping2 = new CookingStation(new Vector2(7, 13), choppingIngredients, 15);
         bin = new Bin(new Vector2(0, 14), 0);
         bunBox = new PantryBox(new Vector2(0, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Bun")).prepare());
         tomatoBox = new PantryBox(new Vector2(2, 1), Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato")));
@@ -74,9 +77,13 @@ public class PiazzaMap {
                 meatBox, plating1, plating2, plating3, counter1, counter2, counter3));
     }
 
-    public void renderMap() {
+    public void renderMap(SpriteBatch batch) {
+        // render TileMap
         mapRenderer.setView(camera);
         mapRenderer.render();
+
+        // render progress bars
+        interactableList.forEach(station -> station.renderProgress(batch, (30/32f), (16/32f)));
     }
 
     public InteractionStation checkInteraction(Cook cook) {
