@@ -14,6 +14,10 @@ public class Counter extends InteractionStation {
 
     private Cook attachedCook;
 
+    /**
+     * Creates a counter with a position.
+     * @param position The position of the counter.
+     */
     public Counter(Vector2 position) {
         super(position, 0);
         toCustomer = null;
@@ -31,8 +35,8 @@ public class Counter extends InteractionStation {
 
     /**
      * This checks if the top of the cook's stack is a dish, if so pop it and save it.
-     * @param cook
-     * @return whether interaction is valid
+     * @param cook The cook interacting with the counter.
+     * @return Whether interaction is valid.
      */
     @Override
     public boolean canInteract(Cook cook) {

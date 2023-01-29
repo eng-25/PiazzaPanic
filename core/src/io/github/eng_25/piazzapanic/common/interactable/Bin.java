@@ -8,10 +8,13 @@ import io.github.eng_25.piazzapanic.common.entity.Cook;
  * which involves removing the top item from the stack.
  */
 public class Bin extends InteractionStation {
-
     private Cook attachedCook;
 
-    // Do I need javadoc for constructors?
+    /**
+     * Creates a bin with a position and a preparation time
+     * @param position of the bin instance
+     * @param prepTime time that it takes to push an item from the cook's tack to the bin
+     */
     public Bin(Vector2 position, int prepTime) {
         super(position, prepTime);
         attachedCook = null;
@@ -27,7 +30,7 @@ public class Bin extends InteractionStation {
 
     /**
      * A method that checks if there is an item in the cook's stack to be removed
-     * @param cook
+     * @param cook The cook interacting with the bin
      * @return whether interaction is valid
      */
     @Override
