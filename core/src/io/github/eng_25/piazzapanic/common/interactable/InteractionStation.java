@@ -86,9 +86,11 @@ public abstract class InteractionStation {
         return isWorking;
     }
 
-    public void renderProgress(SpriteBatch batch, float barX, float barY) {
+    public void renderProgress(SpriteBatch batch, float tileSize) {
         if (isWorking && timeToPrep > 0) { // only render progress bar on stations which have a prep time
             batch.begin();
+            float barX = progressBar.getRegionWidth()/tileSize;
+            float barY = progressBar.getRegionHeight()/tileSize;
             float xPos = position.x+((1-barX)/2f);
             float yPos = position.y+2f;
             // bg

@@ -83,7 +83,7 @@ public class PiazzaMap {
         mapRenderer.render();
 
         // render progress bars
-        interactableList.forEach(station -> station.renderProgress(batch, (30/32f), (16/32f)));
+        interactableList.forEach(station -> station.renderProgress(batch, TILE_SIZE));
     }
 
     public InteractionStation checkInteraction(Cook cook) {
