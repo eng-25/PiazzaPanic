@@ -18,11 +18,19 @@ public class PantryBox extends InteractionStation {
         attachedCook = null;
     }
 
+    /**
+     * Adds the relevant ingredient to the interacting cook's stack
+     */
     @Override
     public void finishInteract() {
         attachedCook.pushStack(toOutput);
     }
 
+    /**
+     * If the stack isn't full (an item can be pushed), the cook can interact with the pantry box
+     * @param cook
+     * @return whether interaction is valid
+     */
     @Override
     public boolean canInteract(Cook cook) {
         if (!(cook.isStackFull())) {

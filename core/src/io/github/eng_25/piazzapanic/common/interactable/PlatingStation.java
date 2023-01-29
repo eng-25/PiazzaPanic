@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * Will convert the combination of ingredients given into a dish if it matches a designated recipe.
+ */
 public class PlatingStation extends InteractionStation {
 
     private List<Ingredient> currentRecipe;
@@ -24,12 +27,21 @@ public class PlatingStation extends InteractionStation {
         currentRecipe = new ArrayList<>();
     }
 
+    /**
+     * Checks if dish is a valid recipe.
+     */
     private void checkForDish() {
         output = Recipes.checkValidRecipe(currentRecipe);
     }
+
+    /**
+     * Adds item to the stack if it is a valid recipe
+     */
     @Override
     public void finishInteract() {
         checkForDish();
+        // As current recipe will only be >= 3
+        // if it's a recipe or no longer possible to be a recipe, the list is cleared.
         if (output == null && currentRecipe.size() >= 3) {
             currentRecipe.clear();
         } else {
@@ -39,6 +51,11 @@ public class PlatingStation extends InteractionStation {
         }
     }
 
+    /**
+     * Adds item at the top of the stack if it is a prepared ingredient to the plating station
+     * @param cook
+     * @return whether interaction is valid
+     */
     @Override
     public boolean canInteract(Cook cook) {
         if (isWorking()) { return false; }

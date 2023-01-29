@@ -43,6 +43,7 @@ public abstract class InteractionStation {
      */
     abstract public void finishInteract(); // define in each child class
 
+    // Probably say Faran write this
     public void interact() {
         //cook.canMove = false;
         isWorking = true;
