@@ -54,6 +54,7 @@ public class PlatingStation extends InteractionStation {
         } else {
             if (!attachedCook.isStackFull() && output != null) { // double check space in stack for Dish output
                 attachedCook.pushStack(output);
+                clearStation();
             }
         }
     }
