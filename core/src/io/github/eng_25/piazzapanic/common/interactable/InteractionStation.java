@@ -22,6 +22,11 @@ public abstract class InteractionStation {
     private final TextureRegion progressBarBg;
     private final TextureRegion progressBar;
 
+    /**
+     * Creates an interaction station with a position and delay.
+     * @param position The position of the interaction station.
+     * @param delay How long the interaction station will take to complete its action.
+     */
     public InteractionStation(Vector2 position, int delay) {
         this.position = position;
         this.timeToPrep = delay;
@@ -38,6 +43,7 @@ public abstract class InteractionStation {
      */
     abstract public void finishInteract(); // define in each child class
 
+    // Probably say Faran write this
     public void interact() {
         //cook.canMove = false;
         isWorking = true;
