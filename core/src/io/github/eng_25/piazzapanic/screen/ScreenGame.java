@@ -88,13 +88,6 @@ public class ScreenGame extends ScreenBase {
         // map
         map = new PiazzaMap(rm, camera);
 
-        adjustCam();
-
-        setupWindows();
-        setupUI();
-
-        addActors();
-
     }
 
     /**
@@ -143,16 +136,23 @@ public class ScreenGame extends ScreenBase {
     }
 
     private void setupUI() {
+
+        // reputation UI
+//        Image repPoint = new Image(resourceManager.burger);
+//        UITable.add(repPoint);//.left().top();
+//        //UITable.add(repPoint).left().top();//.padLeft((resourceManager.buttonUp.getRegionWidth()*2))
+//                //.padTop(0);
+//        UITable.debug();
+
         // pause button
         final TextButton pauseButton = UIHelper.createTextButton("Pause",
-                UIViewport.getWorldWidth() - resourceManager.buttonUp.getRegionWidth(), 0, UITable);
+                UIViewport.getScreenWidth()-(resourceManager.buttonUp.getRegionWidth()), 0, UITable);
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 pauseWindow.setVisible(true);
             }
         });
-
 
         // stack UI
         Image emptyStack = new Image(resourceManager.emptyStack);
@@ -164,6 +164,12 @@ public class ScreenGame extends ScreenBase {
         UITable.add(stack).left().row();
         updateStackTextures();
         adjustStackUIPosition();
+
+        // reputation UI
+        if (reputationPoints > 0) {
+            Image repPoint = new Image(resourceManager.reputation_textures[reputationPoints - 1][0]);
+            UITable.add(repPoint).right().bottom();
+        }
     }
 
     private void updateStackTextures() {
@@ -261,6 +267,35 @@ public class ScreenGame extends ScreenBase {
         return Dish.getDish((String) dishKeys[randomDishIndex]);
     }
 
+    public void loseReputation() {
+        reputationPoints--;
+        if (reputationPoints<=0) {
+            loseGame();
+        }
+    }
+
+    private void updateRepUI() {
+        Image updated = null;
+        if (reputationPoints > 0) {
+            updated = new Image(resourceManager.reputation_textures[reputationPoints - 1][0]);
+        }
+        UITable.getCells().get(UITable.getCells().size-1).setActor(updated).bottom().right();
+
+    }
+
+    private void loseGame() {
+        endGame("Game Lost");
+    }
+
+    private void winGame() {
+        endGame("Game Won");
+    }
+
+    private void endGame(String message) {
+        // dispose and set screen to ScreenGameEnd with message
+        this.dispose();
+    }
+
     @Override
     public void show() {
         // setup InputMultiplexer to handle both UI input and other key inputs for this class simultaneously
@@ -273,6 +308,13 @@ public class ScreenGame extends ScreenBase {
         customerCount = 0;
         customersWaiting = 0;
         reputationPoints = REPUTATION_AMOUNT;
+
+        adjustCam();
+        setupWindows();
+        setupUI();
+
+        addActors();
+
         addCustomer();
     }
 
@@ -289,15 +331,16 @@ public class ScreenGame extends ScreenBase {
         updateTimer(delta);
 
         // render map and progress bars
-        map.renderMap((SpriteBatch) stage.getBatch(), delta);
+        map.renderMap((SpriteBatch) stage.getBatch(), delta, this);
 
         // act and draw main stage
         stage.act(delta);
         stage.draw();
         adjustCam();
 
-        // stack UI
+        // UI
         updateStackTextures();
+        updateRepUI();
 
         // UI stage
         UIViewport.apply();
@@ -310,11 +353,15 @@ public class ScreenGame extends ScreenBase {
         viewport.update(width, height); // don't centre camera, should be positioned on current cook
         UIViewport.update(width, height, true); // do centre camera for UI
 
+        Array<Cell> UICells = UITable.getCells();
         // pause button positioning
-        UITable.getCells().get(0).padLeft(UIViewport.getWorldWidth() - resourceManager.buttonUp.getRegionWidth());
+        UICells.get(0).padLeft(UIViewport.getScreenWidth()-(resourceManager.buttonUp.getRegionWidth()));
 
         // stack UI positioning
         adjustStackUIPosition();
+
+        // reputation UI positioning
+        UICells.get(UICells.size-1).bottom().right();
 
         resizeWindow(pauseWindow);
         resizeWindow(guideWindow);

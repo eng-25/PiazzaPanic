@@ -3,9 +3,11 @@ package io.github.eng_25.piazzapanic.common.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.common.ingredient.Dish;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.common.interactable.Counter;
+import io.github.eng_25.piazzapanic.screen.ScreenGame;
 
 public class Customer {
 
@@ -36,13 +38,15 @@ public class Customer {
         position = new Vector2(16, 0);
     }
 
-    public void tick(float delta, SpriteBatch batch) { // returns true if timer has expired
+    public void tick(float delta, SpriteBatch batch, ScreenGame game) { // returns true if timer has expired
         renderCustomer(batch);
         if (shouldTickTimer) {
             timer-=delta;
 
             if (timer <= 0) {
                 // lose reputation
+                game.loseReputation();
+                shouldTickTimer = false;
             }
         }
     }
