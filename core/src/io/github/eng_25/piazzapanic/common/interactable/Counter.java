@@ -34,7 +34,7 @@ public class Counter extends InteractionStation {
      */
     @Override
     public void finishInteract() {
-        if (toCustomer == dishWanted) {
+        if (toCustomer.getName().equals(dishWanted.getName())) {
             customer.receiveDish();
             removeCustomer();
         }

@@ -7,13 +7,18 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
-import io.github.eng_25.piazzapanic.common.interactable.*;
+import io.github.eng_25.piazzapanic.common.interactable.Counter;
+import io.github.eng_25.piazzapanic.common.interactable.InteractionFactory;
+import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
+import io.github.eng_25.piazzapanic.common.interactable.PantryBox;
 import io.github.eng_25.piazzapanic.screen.ScreenGame;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PiazzaMap {
 
@@ -22,25 +27,8 @@ public class PiazzaMap {
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final OrthographicCamera camera;
-    private final ArrayList<InteractionStation> interactableList;
-    private final Counter[] counters; // for customer logic
-
-    private final CookingStation pan1;
-    private final CookingStation pan2;
-    private final CookingStation chopping1;
-    private final CookingStation chopping2;
-    private final Bin bin;
-    private final PantryBox bunBox;
-    private final PantryBox tomatoBox;
-    private final PantryBox onionBox;
-    private final PantryBox lettuceBox;
-    private final PantryBox meatBox;
-    private final PlatingStation plating1;
-    private final PlatingStation plating2;
-    private final PlatingStation plating3;
-    private final Counter counter1;
-    private final Counter counter2;
-    private final Counter counter3;
+    private final List<InteractionStation> interactableList;
+    private final InteractionStation[] counters; // for customer logic
 
     public PiazzaMap(ResourceManager rm, OrthographicCamera camera) {
         this.map = rm.gameMap;
@@ -49,39 +37,45 @@ public class PiazzaMap {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / TILE_SIZE);
 
         // interaction stations
-        final List<Ingredient> panIngredients = List.of(
-//                Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat"))
-                Ingredient.getIngredient("Meat")
-        );
-        final List<Ingredient> choppingIngredients = List.of(
-//                Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")),
-//                Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato")),
-//                Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Onion"))
-                Ingredient.getIngredient("Lettuce"),
-                Ingredient.getIngredient("Tomato"),
-                Ingredient.getIngredient("Onion")
-        );
+        final PantryBox bunBox = new PantryBox(new Vector2(0, 1), Ingredient.getIngredient("Bun").prepare());
+        final PantryBox tomatoBox = new PantryBox(new Vector2(2, 1), Ingredient.getIngredient("Tomato"));
+        final PantryBox onionBox = new PantryBox(new Vector2(4, 1), Ingredient.getIngredient("Onion"));
+        final PantryBox lettuceBox = new PantryBox(new Vector2(6, 1), Ingredient.getIngredient("Lettuce"));
+        final PantryBox meatBox = new PantryBox(new Vector2(8, 1), Ingredient.getIngredient("Meat"));
 
-        pan1 = new CookingStation(new Vector2(1, 13), panIngredients, 30);
-        pan2 = new CookingStation(new Vector2(3, 13), panIngredients, 30);
-        chopping1 = new CookingStation(new Vector2(5, 13), choppingIngredients, 15);
-        chopping2 = new CookingStation(new Vector2(7, 13), choppingIngredients, 15);
-        bin = new Bin(new Vector2(0, 14), 0);
-        bunBox = new PantryBox(new Vector2(0, 1), Ingredient.getIngredient("Bun").prepare());
-        tomatoBox = new PantryBox(new Vector2(2, 1), Ingredient.getIngredient("Tomato"));
-        onionBox = new PantryBox(new Vector2(4, 1), Ingredient.getIngredient("Onion"));
-        lettuceBox = new PantryBox(new Vector2(6, 1), Ingredient.getIngredient("Lettuce"));
-        meatBox = new PantryBox(new Vector2(8, 1), Ingredient.getIngredient("Meat"));
-        plating1 = new PlatingStation(new Vector2(4, 13));
-        plating2 = new PlatingStation(new Vector2(6, 13));
-        plating3 = new PlatingStation(new Vector2(8, 13));
-        counter1 = new Counter(new Vector2(9, 11));
-        counter2 = new Counter(new Vector2(9, 9));
-        counter3 = new Counter(new Vector2(9, 7));
+        final int COUNTER_COUNT = 3;
+        final Vector2[] COUNTER_POSITIONS =
+                new Vector2[]{new Vector2(9, 11), new Vector2(9, 9), new Vector2(9, 7)};
+        final int PAN_COUNT = 2;
+        final Vector2[] PAN_POSITIONS =
+                new Vector2[]{new Vector2(1, 13), new Vector2(3, 13)};
+        final int CHOPPING_COUNT = 2;
+        final Vector2[] CHOPPING_POSITIONS =
+                new Vector2[]{new Vector2(5, 13), new Vector2(7, 13)};
+        final int BIN_COUNT = 1;
+        final Vector2[] BIN_POSITIONS =
+                new Vector2[]{new Vector2(0, 14)};
+        final int PLATING_COUNT = 3;
+        final Vector2[] PLATING_POSITIONS =
+                new Vector2[]{new Vector2(4, 13), new Vector2(6, 13), new Vector2(8, 13)};
 
-        interactableList = new ArrayList<>(List.of(pan1, pan2, chopping1, chopping2, bin, bunBox, tomatoBox, onionBox, lettuceBox,
-                meatBox, plating1, plating2, plating3, counter1, counter2, counter3));
-        counters = new Counter[]{counter1, counter2, counter3};
+        // sort counters first as they also need their own list
+        List<InteractionStation> counterList =
+                InteractionFactory.createStations(COUNTER_COUNT, COUNTER_POSITIONS, "counter");
+        counters = new Counter[COUNTER_COUNT];
+        assert counterList != null;
+        counterList.toArray(counters);
+
+        // pantry boxes
+        interactableList = Stream.of
+                (List.of(bunBox, tomatoBox, onionBox, lettuceBox, meatBox),
+                        counterList,
+                        InteractionFactory.createStations(PAN_COUNT, PAN_POSITIONS, "pan"),
+                        InteractionFactory.createStations(CHOPPING_COUNT, CHOPPING_POSITIONS, "chopping"),
+                        InteractionFactory.createStations(BIN_COUNT, BIN_POSITIONS, "bin"),
+                        InteractionFactory.createStations(PLATING_COUNT, PLATING_POSITIONS, "plating")
+                ).flatMap(Collection::stream).collect(Collectors.toList());
+
     }
 
     public void renderMap(SpriteBatch batch, float delta, ScreenGame gameScreen) {
@@ -94,8 +88,10 @@ public class PiazzaMap {
 
         // counter and customer logic
         Arrays.stream(counters).forEach(counter -> {
-            if (counter.hasCustomer()) {
-                counter.getCustomer().tick(delta, batch, gameScreen);
+            if (counter instanceof Counter) {
+                if (((Counter) counter).hasCustomer()) {
+                    ((Counter) counter).getCustomer().tick(delta, batch, gameScreen);
+                }
             }
         });
     }
@@ -118,7 +114,7 @@ public class PiazzaMap {
     }
 
     public Counter getFreeCounter() {
-        for (Counter counter : counters) {
+        for (Counter counter : (Counter[]) counters) {
             if (!counter.hasCustomer()) {
                 return counter;
             }
@@ -139,6 +135,6 @@ public class PiazzaMap {
     }
 
     public Counter[] getCounters() {
-        return counters;
+        return (Counter[]) counters;
     }
 }

@@ -48,6 +48,7 @@ public class ScreenGame extends ScreenBase {
     private boolean interactHappened; // to prevent holding of interact key causing multiple calls
     private float gameTimer; // game timer in seconds
     private int customerCount; // number of customers that have been created
+    private int customersServed;
     private int reputationPoints; // reputation points left
     private int customersWaiting; // used in case there are no free counters when a new customer is added
 
@@ -136,14 +137,6 @@ public class ScreenGame extends ScreenBase {
     }
 
     private void setupUI() {
-
-        // reputation UI
-//        Image repPoint = new Image(resourceManager.burger);
-//        UITable.add(repPoint);//.left().top();
-//        //UITable.add(repPoint).left().top();//.padLeft((resourceManager.buttonUp.getRegionWidth()*2))
-//                //.padTop(0);
-//        UITable.debug();
-
         // pause button
         final TextButton pauseButton = UIHelper.createTextButton("Pause",
                 UIViewport.getScreenWidth()-(resourceManager.buttonUp.getRegionWidth()), 0, UITable);
@@ -293,6 +286,7 @@ public class ScreenGame extends ScreenBase {
 
     private void endGame(String message) {
         // dispose and set screen to ScreenGameEnd with message
+        System.out.println("win");
         this.dispose();
     }
 
@@ -307,6 +301,7 @@ public class ScreenGame extends ScreenBase {
         gameTimer = 0;
         customerCount = 0;
         customersWaiting = 0;
+        customersServed = 0;
         reputationPoints = REPUTATION_AMOUNT;
 
         adjustCam();

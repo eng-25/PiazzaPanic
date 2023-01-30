@@ -13,10 +13,9 @@ public class Bin extends InteractionStation {
     /**
      * Creates a bin with a position and a preparation time
      * @param position of the bin instance
-     * @param prepTime time that it takes to push an item from the cook's tack to the bin
      */
-    public Bin(Vector2 position, int prepTime) {
-        super(position, prepTime);
+    public Bin(Vector2 position) {
+        super(position, 0);
         attachedCook = null;
     }
 
