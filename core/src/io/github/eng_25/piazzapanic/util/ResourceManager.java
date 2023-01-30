@@ -36,6 +36,8 @@ public class ResourceManager {
     public TextureRegion barBg;
     public TextureRegion barFg;
 
+    public TextureRegion[][] reputation_textures;
+
     public BitmapFont font;
 
     public TiledMap gameMap;
@@ -71,6 +73,8 @@ public class ResourceManager {
         customer = atlas.findRegion("customer");
         barBg = atlas.findRegion("bar_bg");
         barFg = atlas.findRegion("bar_fg");
+
+        reputation_textures = atlas.findRegion("reputation_region").split(96, 32);
 
         // font
         font = new BitmapFont(Gdx.files.internal("assets/fonts/font.fnt"), false);

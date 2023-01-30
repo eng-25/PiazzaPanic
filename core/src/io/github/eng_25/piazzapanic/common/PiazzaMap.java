@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.common.interactable.*;
+import io.github.eng_25.piazzapanic.screen.ScreenGame;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class PiazzaMap {
         counters = new Counter[]{counter1, counter2, counter3};
     }
 
-    public void renderMap(SpriteBatch batch, float delta) {
+    public void renderMap(SpriteBatch batch, float delta, ScreenGame gameScreen) {
         // render TileMap
         mapRenderer.setView(camera);
         mapRenderer.render();
@@ -94,7 +95,7 @@ public class PiazzaMap {
         // counter and customer logic
         Arrays.stream(counters).forEach(counter -> {
             if (counter.hasCustomer()) {
-                counter.getCustomer().tick(delta, batch);
+                counter.getCustomer().tick(delta, batch, gameScreen);
             }
         });
     }
