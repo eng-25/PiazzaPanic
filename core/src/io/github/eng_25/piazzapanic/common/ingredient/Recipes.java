@@ -9,15 +9,15 @@ import java.util.TreeSet;
 public enum Recipes {
 
     SALAD(List.of(
-            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Onion")).prepare(),
-            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")).prepare(),
-            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Tomato")).prepare()
-    ), Dish.copyOf(Dish.DISH_MAP.get("Salad"))),
+            Ingredient.getIngredient("Onion").prepare(),
+            Ingredient.getIngredient("Lettuce").prepare(),
+            Ingredient.getIngredient("Tomato").prepare()
+    ), Dish.getDish("Salad")),
     BURGER(List.of(
-            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Bun")),
-            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Meat")).prepare(),
-            Ingredient.copyOf(Ingredient.INGREDIENT_MAP.get("Lettuce")).prepare()
-    ), Dish.copyOf(Dish.DISH_MAP.get("Burger")));
+            Ingredient.getIngredient("Bun"), // already prepared
+            Ingredient.getIngredient("Meat").prepare(),
+            Ingredient.getIngredient("Lettuce").prepare()
+    ), Dish.getDish("Burger"));
 
     private final List<Ingredient> ingredientList;
     private final Dish dishOut;

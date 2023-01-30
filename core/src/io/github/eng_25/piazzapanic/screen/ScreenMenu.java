@@ -14,7 +14,8 @@ public class ScreenMenu extends ScreenBase {
 
     private Table table;
 
-    private final float TABLE_TOP_PAD_MULTIPLIER = 4 / 10f;
+    private final float TABLE_TOP_PAD_MULTIPLIER = 4 / 10f; // pad amount multiplier from top of screen for the table
+    // start
 
     public ScreenMenu(PiazzaPanic game, ResourceManager rm) {
         super(game, rm, new ScreenViewport());

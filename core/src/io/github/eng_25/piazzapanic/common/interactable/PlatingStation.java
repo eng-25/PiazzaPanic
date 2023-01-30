@@ -38,6 +38,9 @@ public class PlatingStation extends InteractionStation {
         output = Recipes.checkValidRecipe(currentRecipe);
     }
 
+
+    private void clearStation() { currentRecipe.clear(); }
+
     /**
      * Adds item to the stack if it is a valid recipe.
      */
@@ -47,7 +50,7 @@ public class PlatingStation extends InteractionStation {
         // As current recipe will only be >= 3
         // if it's a recipe or no longer possible to be a recipe, the list is cleared.
         if (output == null && currentRecipe.size() >= 3) {
-            currentRecipe.clear();
+            clearStation();
         } else {
             if (!attachedCook.isStackFull() && output != null) { // double check space in stack for Dish output
                 attachedCook.pushStack(output);

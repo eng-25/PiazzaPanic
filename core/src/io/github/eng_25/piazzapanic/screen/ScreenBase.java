@@ -19,13 +19,13 @@ public abstract class ScreenBase implements Screen, InputProcessor {
     protected ResourceManager resourceManager;
     protected Stage stage;
 
-    // attached to stage, here for ease of access
+    // attached to stage, put here as fields for easier access
     protected OrthographicCamera camera;
     protected Viewport viewport;
 
     /**
-     * @param game,    the main Game class
-     * @param rm       an instance of ResourceManager
+     * @param game,    the main Game class instance
+     * @param rm       an instance of ResourceManager, to access Assets
      * @param viewport the viewport to be used for this screen
      */
     public ScreenBase(PiazzaPanic game, ResourceManager rm, Viewport viewport) {
@@ -37,9 +37,9 @@ public abstract class ScreenBase implements Screen, InputProcessor {
     }
 
     /**
-     * Creates a new table, convenience for all screens
+     * Creates a new table, convenience method for all screens to use
      *
-     * @return
+     * @return a new Table, set to fill parent
      */
     public Table createTable() {
         Table table = new Table();
