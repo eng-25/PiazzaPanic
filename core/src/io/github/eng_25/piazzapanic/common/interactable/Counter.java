@@ -34,8 +34,10 @@ public class Counter extends InteractionStation {
      */
     @Override
     public void finishInteract() {
-        // something to do with checking that toCustomer is the same as what the customer requests
-        // (not sure how this would be implemented)
+        if (toCustomer == dishWanted) {
+            customer.receiveDish();
+            removeCustomer();
+        }
     }
 
     /**
@@ -54,6 +56,7 @@ public class Counter extends InteractionStation {
     public void attachCustomer(Customer toAttach) {
         customer = toAttach;
         dishWanted = customer.getDish();
+        System.out.println(dishWanted.getName());
         customer.walkToCounter(this);
     }
 
