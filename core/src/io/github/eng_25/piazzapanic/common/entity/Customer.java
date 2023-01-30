@@ -3,30 +3,35 @@ package io.github.eng_25.piazzapanic.common.entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.common.ingredient.Dish;
-import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.common.interactable.Counter;
 import io.github.eng_25.piazzapanic.screen.ScreenGame;
+import io.github.eng_25.piazzapanic.util.ResourceManager;
 
 public class Customer {
 
     private final Dish dishWanted;
-    private TextureRegion speechTexture;
     private Vector2 position;
     private float timer;
     private final float waitTime;
     private boolean shouldTickTimer;
+    private final ScreenGame game;
 
-    private static final TextureRegion TEXTURE = Ingredient.rm.customer;
+    private final ResourceManager rm = new ResourceManager();
+    private final TextureRegion dishTexture;
+    //private final TextureRegion speechTexture = rm.speech;
+    private final TextureRegion progressBg = rm.barBg;
+    private final TextureRegion progressBar = rm.barFg;
+    private final TextureRegion texture = rm.customer;
 
-    public Customer(Dish dishWanted, int waitTime) {
+    public Customer(Dish dishWanted, int waitTime, ScreenGame game) {
         this.dishWanted = dishWanted;
-        speechTexture = dishWanted.getTexture();
+        dishTexture = dishWanted.getTexture();
         timer = waitTime;
         this.waitTime = waitTime;
         position = new Vector2(14, 14);
         shouldTickTimer = false;
+        this.game = game;
     }
 
     public void walkToCounter(Counter counter) { //TODO: change
@@ -38,8 +43,8 @@ public class Customer {
         position = new Vector2(16, 0);
     }
 
-    public void tick(float delta, SpriteBatch batch, ScreenGame game) { // returns true if timer has expired
-        renderCustomer(batch);
+    public void tick(float delta, SpriteBatch batch, ScreenGame game, float tileSize) { // returns true if timer has expired
+        renderCustomer(batch, tileSize);
         if (shouldTickTimer) {
             timer-=delta;
 
@@ -54,16 +59,29 @@ public class Customer {
     public void receiveDish() {
         shouldTickTimer = false;
         walkAway();
+        game.customerServed();
     }
 
-    public void renderProgress() {
+    private void renderCustomer(SpriteBatch batch, float tileSize) {
+        if (!batch.isDrawing()) { batch.begin(); }
+        // customer render
+        batch.draw(texture, position.x+1, position.y, 1, 2);
 
-    }
+        // speech render
+        //batch.draw(speechTexture, position.x+1, position.y+1.5, 1, 2);
+        // dish inside speech render
+        batch.draw(dishTexture, position.x+1, position.y+2, 1, 1);
 
-    private void renderCustomer(SpriteBatch batch) {
-        batch.begin();
-        batch.draw(TEXTURE, position.x+1, position.y, 1, 2);
-        batch.end();
+        // progress render
+        if (shouldTickTimer) {
+            float barX = progressBg.getRegionWidth() / tileSize;
+            float barY = progressBg.getRegionHeight() / tileSize;
+            float barXPos = position.x+1;
+            float barYPos = position.y+3;
+            float progress = 1-(waitTime-timer)/waitTime;
+            batch.draw(progressBg, barXPos, barYPos, barX, barY);
+            batch.draw(progressBar, barXPos, barYPos, barX*progress, barY);
+        }
     }
 
     public Dish getDish() {

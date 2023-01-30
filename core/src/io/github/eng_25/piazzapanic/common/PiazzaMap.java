@@ -79,21 +79,27 @@ public class PiazzaMap {
     }
 
     public void renderMap(SpriteBatch batch, float delta, ScreenGame gameScreen) {
+        batch.begin();
         // render TileMap
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-        // render progress bars
-        interactableList.forEach(station -> station.renderProgress(batch, TILE_SIZE));
+        // render progress bars and tick stations
+        interactableList.forEach(station -> {
+            station.renderProgress(batch, TILE_SIZE);
+            station.tickTimer(delta);
+        });
+
 
         // counter and customer logic
         Arrays.stream(counters).forEach(counter -> {
             if (counter instanceof Counter) {
                 if (((Counter) counter).hasCustomer()) {
-                    ((Counter) counter).getCustomer().tick(delta, batch, gameScreen);
+                    ((Counter) counter).getCustomer().tick(delta, batch, gameScreen, TILE_SIZE);
                 }
             }
         });
+        batch.end();
     }
 
     public InteractionStation checkInteraction(Cook cook) {
@@ -123,7 +129,7 @@ public class PiazzaMap {
     }
 
     public void dispose() {
-        mapRenderer.dispose();
+        //mapRenderer.dispose();
     }
 
     public TiledMap getMap() {

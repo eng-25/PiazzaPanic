@@ -74,7 +74,7 @@ public class ScreenGame extends ScreenBase {
 
         // UI setup
         UIViewport = new ScreenViewport();
-        UIStage = new Stage(UIViewport);
+        UIStage = new Stage(UIViewport, game.getBatch());
         UITable = createTable(); // create table for laying out UI elements
         UITable.top().left(); // set table's gravity to top left
         UIStage.addActor(UITable);
@@ -249,7 +249,7 @@ public class ScreenGame extends ScreenBase {
             customersWaiting++;
             return;
         }
-        Customer customer = new Customer(getRandomDish(), CUSTOMER_TIMER);
+        Customer customer = new Customer(getRandomDish(), CUSTOMER_TIMER, this);
         toAttach.attachCustomer(customer);
     }
 
@@ -276,6 +276,13 @@ public class ScreenGame extends ScreenBase {
 
     }
 
+    public void customerServed() {
+        customersServed++;
+        if (customersServed >= TOTAL_CUSTOMERS) {
+            winGame();
+        }
+    }
+
     private void loseGame() {
         endGame("Game Lost");
     }
@@ -285,9 +292,8 @@ public class ScreenGame extends ScreenBase {
     }
 
     private void endGame(String message) {
-        // dispose and set screen to ScreenGameEnd with message
-        System.out.println("win");
-        this.dispose();
+        // set screen to end screen, in turn calls hide() which calls dispose()
+        game.setScreen(new ScreenGameEnd(game, resourceManager, message, gameTimer));
     }
 
     @Override
@@ -316,17 +322,18 @@ public class ScreenGame extends ScreenBase {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+        //this.dispose();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 0.1f);
+        Gdx.gl.glClearColor(0, 1, 1, 0.1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         updateTimer(delta);
 
         // render map and progress bars
-        map.renderMap((SpriteBatch) stage.getBatch(), delta, this);
+        map.renderMap(game.getBatch(), delta, this);
 
         // act and draw main stage
         stage.act(delta);
