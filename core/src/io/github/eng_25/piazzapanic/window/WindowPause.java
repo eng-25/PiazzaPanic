@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
+import io.github.eng_25.piazzapanic.screen.ScreenMenu;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 
@@ -44,6 +45,7 @@ public class WindowPause extends WindowClosable {
 
         final TextButton guideButton = UIHelper.createTextButton("How To Play", padLeft, padTop, table);
         final TextButton muteButton = UIHelper.createTextButton("Mute", padLeft, padTop, table);
+        final TextButton quitButton = UIHelper.createTextButton("Quit to Menu", padLeft, padTop, table);
 
         // mute button listener
         muteButton.addListener(new ClickListener() {
@@ -61,6 +63,14 @@ public class WindowPause extends WindowClosable {
             public void clicked(InputEvent event, float x, float y) {
                 guideWindow.setVisible(true);
                 guideWindow.toFront();
+            }
+        });
+
+        // quit button listener
+        quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new ScreenMenu(game, resourceManager));
             }
         });
     }
