@@ -1,10 +1,14 @@
 package io.github.eng_25.piazzapanic.common.interactable;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import io.github.eng_25.piazzapanic.common.entity.Cook;
 import io.github.eng_25.piazzapanic.common.ingredient.Dish;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import io.github.eng_25.piazzapanic.common.ingredient.Recipes;
+import io.github.eng_25.piazzapanic.util.ResourceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +21,9 @@ public class PlatingStation extends InteractionStation {
     private final List<Ingredient> heldIngredients;
     private Cook attachedCook;
     private Dish output;
+
+    ResourceManager rm = new ResourceManager();
+    TextureRegion[] chars = rm.platingChars;
 
     /**
      * Creates an instance of a plating station with a position and 0 timer.
@@ -85,5 +92,15 @@ public class PlatingStation extends InteractionStation {
             }
         }
         return false;
+    }
+
+    @Override
+    public void renderProgress(SpriteBatch batch, float tileSize) {
+        super.renderProgress(batch, tileSize);
+
+        TextureRegion firstChar = chars[heldIngredients.size()+1];
+        batch.draw(firstChar, position.x, position.y+1.6f, 0.5f, 0.5f);
+        batch.draw(chars[0], position.x+0.3f, position.y+1.6f, 0.5f, 0.5f);
+        batch.draw(chars[4], position.x+0.6f, position.y+1.6f, 0.5f, 0.5f);
     }
 }

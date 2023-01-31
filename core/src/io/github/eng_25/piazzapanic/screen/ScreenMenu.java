@@ -2,6 +2,7 @@ package io.github.eng_25.piazzapanic.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -32,6 +33,12 @@ public class ScreenMenu extends ScreenBase {
      * Convenience to call all button methods, allows more buttons to be added here
      */
     private void addButtons() {
+        // logo
+        Image img = new Image(resourceManager.logo);
+        img.scaleBy(2f);
+        table.add(img).padLeft(-img.getWidth()*2);
+        table.row();
+
         addPlayButton();
         addMuteButton();
     }

@@ -6,21 +6,21 @@ filter: Nearest, Nearest
 repeat: none
 bar_bg
   rotate: false
-  xy: 1995, 494
+  xy: 1529, 224
   size: 30, 8
   orig: 30, 8
   offset: 0, 0
   index: -1
 bar_fg
   rotate: false
-  xy: 1731, 428
+  xy: 1633, 302
   size: 30, 8
   orig: 30, 8
   offset: 0, 0
   index: -1
 bun_prepared
   rotate: false
-  xy: 886, 7
+  xy: 1895, 393
   size: 64, 43
   orig: 64, 43
   offset: 0, 0
@@ -48,28 +48,28 @@ button_up
   index: -1
 close_button
   rotate: false
-  xy: 1431, 238
+  xy: 1633, 312
   size: 100, 60
   orig: 100, 60
   offset: 0, 0
   index: -1
 cook
   rotate: false
-  xy: 1699, 372
+  xy: 1735, 340
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: -1
 customer
   rotate: false
-  xy: 1497, 204
+  xy: 1497, 168
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: -1
 empty_stack
   rotate: false
-  xy: 1431, 172
+  xy: 1529, 234
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -83,7 +83,7 @@ how_to_play
   index: -1
 lettuce_prepared
   rotate: false
-  xy: 1533, 248
+  xy: 1763, 386
   size: 64, 50
   orig: 64, 50
   offset: 0, 0
@@ -95,74 +95,109 @@ lettuce_unprepared
   orig: 64, 48
   offset: 0, 0
   index: -1
+logo
+  rotate: false
+  xy: 1633, 374
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 meat_prepared
   rotate: false
-  xy: 1431, 58
+  xy: 1829, 390
   size: 64, 46
   orig: 64, 46
   offset: 0, 0
   index: -1
 meat_unprepared
   rotate: false
-  xy: 1731, 438
+  xy: 1431, 136
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+one
+  rotate: false
+  xy: 1595, 282
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 onion_prepared
   rotate: false
-  xy: 952, 10
+  xy: 886, 10
   size: 64, 40
   orig: 64, 40
   offset: 0, 0
   index: -1
 onion_unprepared
   rotate: false
-  xy: 1431, 106
+  xy: 1431, 70
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 reputation_region
   rotate: false
-  xy: 1633, 406
+  xy: 1431, 202
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 salad
   rotate: false
-  xy: 1863, 438
+  xy: 1895, 438
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+slash
+  rotate: false
+  xy: 1735, 322
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 speech_bubble
   rotate: false
-  xy: 1797, 438
+  xy: 1829, 438
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 stack
   rotate: false
-  xy: 1633, 340
+  xy: 1763, 438
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+three
+  rotate: false
+  xy: 952, 34
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 tomato_prepared
   rotate: false
-  xy: 1633, 304
+  xy: 1961, 402
   size: 64, 34
   orig: 64, 34
   offset: 0, 0
   index: -1
 tomato_unprepared
   rotate: false
-  xy: 1929, 438
+  xy: 1961, 438
   size: 64, 64
   orig: 64, 64
+  offset: 0, 0
+  index: -1
+two
+  rotate: false
+  xy: 1431, 52
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 window
@@ -170,5 +205,12 @@ window
   xy: 2, 2
   size: 750, 500
   orig: 750, 500
+  offset: 0, 0
+  index: -1
+zero
+  rotate: false
+  xy: 2027, 486
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1

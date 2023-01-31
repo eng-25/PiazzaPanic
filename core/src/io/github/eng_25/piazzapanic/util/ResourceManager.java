@@ -37,6 +37,8 @@ public class ResourceManager {
     public TextureRegion barFg;
     public TextureRegion speech;
     public TextureRegion howToPlay;
+    public TextureRegion logo;
+    public TextureRegion[] platingChars;
 
     public TextureRegion[][] reputation_textures;
 
@@ -80,8 +82,16 @@ public class ResourceManager {
         barFg = atlas.findRegion("bar_fg");
         speech = atlas.findRegion("speech_bubble");
         howToPlay = atlas.findRegion("how_to_play");
+        logo = atlas.findRegion("logo");
 
         reputation_textures = atlas.findRegion("reputation_region").split(96, 32);
+        platingChars = new TextureRegion[]{
+                atlas.findRegion("slash"),
+                atlas.findRegion("zero"),
+                atlas.findRegion("one"),
+                atlas.findRegion("two"),
+                atlas.findRegion("three")
+        };
 
         // font
         font = new BitmapFont(Gdx.files.internal("fonts/font.fnt"), false);
