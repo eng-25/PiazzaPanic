@@ -362,7 +362,7 @@ public class ScreenGame extends ScreenBase {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 1, 1, 0.1f);
+        Gdx.gl.glClearColor(1f, 0.8f, 0.6f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         updateTimer(delta);
