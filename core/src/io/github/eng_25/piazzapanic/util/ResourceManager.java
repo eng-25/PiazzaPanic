@@ -46,6 +46,9 @@ public class ResourceManager {
 
     private final AssetManager assetManager = new AssetManager();
 
+    /**
+     * Creates a new ResourceManager, loading all assets, fonts, maps and sounds
+     */
     public ResourceManager() {
         // load texture atlas
         assetManager.load("assets/asset/texture.atlas", TextureAtlas.class);

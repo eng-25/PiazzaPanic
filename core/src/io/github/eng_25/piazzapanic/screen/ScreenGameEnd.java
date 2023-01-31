@@ -6,23 +6,26 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 
-public class ScreenGameEnd extends ScreenBase{
+/**
+ * Ending Screen, used to display game's timer, end message and a button to return to the main menu.
+ */
+public class ScreenGameEnd extends ScreenBase {
 
     private final String endMessage;
     private final int timeTaken;
     private Table table;
 
     /**
-     * @param game
-     * @param rm       an instance of ResourceManager, to access Assets
+     * @param game       main Game instance
+     * @param rm         an instance of ResourceManager, to access Assets
+     * @param endMessage the ending message to be displayed
+     * @param timeTaken  the game timer
      */
     public ScreenGameEnd(PiazzaPanic game, ResourceManager rm, String endMessage, float timeTaken) {
         super(game, rm, new ScreenViewport());
@@ -30,16 +33,22 @@ public class ScreenGameEnd extends ScreenBase{
         this.timeTaken = (int) Math.floor(timeTaken);
     }
 
+    /**
+     * Writes text to the screen
+     */
     private void addText() {
         Label.LabelStyle style = new Label.LabelStyle(resourceManager.font, Color.WHITE);
-        table.add( new Label(endMessage, style));
+        table.add(new Label(endMessage, style));
         table.row();
-        int mins = timeTaken/60;
-        String timeString = mins > 0 ? (mins + "m " + (timeTaken-(mins*60)) + "s ") : (timeTaken + "s ");
+        int mins = timeTaken / 60;
+        String timeString = mins > 0 ? (mins + "m " + (timeTaken - (mins * 60)) + "s ") : (timeTaken + "s ");
         table.add(new Label("Time spent playing: " + timeString, style));
         table.row();
     }
 
+    /**
+     * Creates button to return to main menu
+     */
     private void addReturnButton() {
         final TextButton button = UIHelper.createTextButton("Main Menu", 0, 10, table);
         button.addListener(new ClickListener() {
@@ -53,7 +62,7 @@ public class ScreenGameEnd extends ScreenBase{
     @Override
     public void show() {
         table = createTable();
-        table.top().padTop(viewport.getScreenHeight()*0.1f);
+        table.top().padTop(viewport.getScreenHeight() * 0.1f);
 
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);

@@ -11,7 +11,6 @@ import io.github.eng_25.piazzapanic.common.interactable.Counter;
 import io.github.eng_25.piazzapanic.common.interactable.InteractionFactory;
 import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
 import io.github.eng_25.piazzapanic.common.interactable.PantryBox;
-import io.github.eng_25.piazzapanic.screen.ScreenGame;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
 import java.util.Arrays;
@@ -20,29 +19,41 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Map class used to render TiledMap and manage all InteractionStations
+ */
 public class PiazzaMap {
 
-    public static final float TILE_SIZE = 32f;
+    public static final float TILE_SIZE = 32f; // tile size in pixels
+    public static final float INTERACTION_RANGE = 1f;
 
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final OrthographicCamera camera;
-    private final List<InteractionStation> interactableList;
-    private final InteractionStation[] counters; // for customer logic
+    private final List<InteractionStation> interactableList; // list of all interaction stations
+    private final InteractionStation[] counters; // array of only the counters, for customer logic
 
+    /**
+     * Gets tilemap and sets up its renderer.
+     * Creates all interaction stations and adds them to the interactableList;
+     *
+     * @param rm     ResourceManager instance
+     * @param camera camera for TiledMap to use
+     */
     public PiazzaMap(ResourceManager rm, OrthographicCamera camera) {
         this.map = rm.gameMap;
         this.camera = camera;
         // setup TiledMap with 1/32 as tiles are 32x32px
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / TILE_SIZE);
 
-        // interaction stations
+        // pantry boxes
         final PantryBox bunBox = new PantryBox(new Vector2(0, 1), Ingredient.getIngredient("Bun").prepare());
         final PantryBox tomatoBox = new PantryBox(new Vector2(2, 1), Ingredient.getIngredient("Tomato"));
         final PantryBox onionBox = new PantryBox(new Vector2(4, 1), Ingredient.getIngredient("Onion"));
         final PantryBox lettuceBox = new PantryBox(new Vector2(6, 1), Ingredient.getIngredient("Lettuce"));
         final PantryBox meatBox = new PantryBox(new Vector2(8, 1), Ingredient.getIngredient("Meat"));
 
+        // other station parameters
         final int COUNTER_COUNT = 3;
         final Vector2[] COUNTER_POSITIONS =
                 new Vector2[]{new Vector2(9, 11), new Vector2(9, 9), new Vector2(9, 7)};
@@ -66,7 +77,7 @@ public class PiazzaMap {
         assert counterList != null;
         counterList.toArray(counters);
 
-        // pantry boxes
+        // creates final stations and adds all stations to list
         interactableList = Stream.of
                 (List.of(bunBox, tomatoBox, onionBox, lettuceBox, meatBox),
                         counterList,
@@ -78,7 +89,13 @@ public class PiazzaMap {
 
     }
 
-    public void renderMap(SpriteBatch batch, float delta, ScreenGame gameScreen) {
+    /**
+     * Used to render map, stations and tick customers
+     *
+     * @param batch SpriteBatch for rendering
+     * @param delta time passed since last call
+     */
+    public void renderMap(SpriteBatch batch, float delta) {
         batch.begin();
         // render TileMap
         mapRenderer.setView(camera);
@@ -95,13 +112,19 @@ public class PiazzaMap {
         Arrays.stream(counters).forEach(counter -> {
             if (counter instanceof Counter) {
                 if (((Counter) counter).hasCustomer()) {
-                    ((Counter) counter).getCustomer().tick(delta, batch, gameScreen, TILE_SIZE);
+                    ((Counter) counter).getCustomer().tick(delta, batch, TILE_SIZE);
                 }
             }
         });
         batch.end();
     }
 
+    /**
+     * Called on interaction key input, to find and return the nearest InteractionStation in range
+     *
+     * @param cook the current cook at time of interaction
+     * @return the nearest InteractionStation if there are any in range, null otherwise.
+     */
     public InteractionStation checkInteraction(Cook cook) {
         Vector2 cookPos = cook.getPosition();
         InteractionStation nearest = null;
@@ -111,7 +134,7 @@ public class PiazzaMap {
             Vector2 pos = station.getPosition();
 
             float dist = pos.dst(cookPos);
-            if (dist < nearestDist && dist <= 1) {
+            if (dist < nearestDist && dist <= INTERACTION_RANGE) {
                 nearestDist = dist;
                 nearest = station;
             }
@@ -119,6 +142,11 @@ public class PiazzaMap {
         return nearest;
     }
 
+    /**
+     * Gets a counter with no Customer attached, if there are any.
+     *
+     * @return the first free Counter found if there are any, null if there are none available.
+     */
     public Counter getFreeCounter() {
         for (Counter counter : (Counter[]) counters) {
             if (!counter.hasCustomer()) {
@@ -129,7 +157,6 @@ public class PiazzaMap {
     }
 
     public void dispose() {
-        //mapRenderer.dispose();
     }
 
     public TiledMap getMap() {

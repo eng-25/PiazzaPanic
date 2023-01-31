@@ -9,11 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
+/**
+ * A Window class with a close button added
+ */
 public abstract class WindowClosable extends Window {
 
     private final ImageButton.ImageButtonStyle closeButtonStyle;
     protected final ResourceManager resourceManager;
 
+    /**
+     * Creates a new window, adding a close button.
+     * Auto clipping is set to false, and transforming is set to true.
+     * @param title a window title, made not visible.
+     * @param resourceManager a ResourceManager instance.
+     */
     public WindowClosable(String title, ResourceManager resourceManager) {
         super(title, new WindowStyle(
                 resourceManager.font, Color.BLACK, new TextureRegionDrawable(resourceManager.windowTex)
@@ -30,6 +39,9 @@ public abstract class WindowClosable extends Window {
         setTransform(true); // allows window to be transformed
     }
 
+    /**
+     * Adds the close button to the window's table
+     */
     private void addCloseButton() {
         final Button closeButton = new ImageButton(closeButtonStyle);
         closeButton.addListener(new ClickListener() {

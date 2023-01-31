@@ -22,6 +22,12 @@ public enum Recipes {
     private final List<Ingredient> ingredientList;
     private final Dish dishOut;
 
+    /**
+     * Each Recipe constant requires an ingredient list and an output dish
+     *
+     * @param ingList List of ingredients
+     * @param dish    output Dish
+     */
     Recipes(List<Ingredient> ingList, Dish dish) {
         ingredientList = ingList;
         dishOut = dish;

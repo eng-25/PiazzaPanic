@@ -5,7 +5,7 @@ import io.github.eng_25.piazzapanic.common.entity.Cook;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 
 /**
- * Based on Ingredient station the cook is at, it will return the relevant ingredient.
+ * Used to give a cook the Ingredient stored, never runs out.
  */
 public class PantryBox extends InteractionStation {
 
@@ -14,8 +14,10 @@ public class PantryBox extends InteractionStation {
 
     /**
      * Creates an instance of a pantry box with a position and specified ingredient to output.
+     * Initially, no cook is attached.
+     *
      * @param position The position of the pantry box.
-     * @param toOutput The ingredient to be outputted.
+     * @param toOutput The ingredient to be output.
      */
     public PantryBox(Vector2 position, Ingredient toOutput) {
         super(position, 0);
@@ -33,14 +35,16 @@ public class PantryBox extends InteractionStation {
 
     /**
      * If the stack isn't full (an item can be pushed), the cook can interact with the pantry box.
+     *
      * @param cook The cook interacting with the pantry box.
-     * @return Whether interaction is valid.
+     * @return true if the interaction is valid, false otherwise.
      */
     @Override
     public boolean canInteract(Cook cook) {
         if (!(cook.isStackFull())) {
             attachedCook = cook;
             return true;
-        } return false;
+        }
+        return false;
     }
 }

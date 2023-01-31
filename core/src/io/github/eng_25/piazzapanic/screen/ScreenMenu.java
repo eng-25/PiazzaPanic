@@ -1,7 +1,6 @@
 package io.github.eng_25.piazzapanic.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -11,19 +10,26 @@ import io.github.eng_25.piazzapanic.PiazzaPanic;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 
+/**
+ * Main menu screen, used to start a new game and to mute the game
+ */
 public class ScreenMenu extends ScreenBase {
 
     private Table table;
 
     private final float TABLE_TOP_PAD_MULTIPLIER = 4 / 10f; // pad amount multiplier from top of screen for the table
-    // start
 
+    /***
+     * Creates a new ScreenMenu, using a ScreenViewport
+     * @param game main Game instance
+     * @param rm a ResourceManager instance, to access assets
+     */
     public ScreenMenu(PiazzaPanic game, ResourceManager rm) {
         super(game, rm, new ScreenViewport());
     }
 
     /**
-     * Convenience to call all button methods, allows more buttons to be added neatly here
+     * Convenience to call all button methods, allows more buttons to be added here
      */
     private void addButtons() {
         addPlayButton();

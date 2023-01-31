@@ -33,13 +33,19 @@ public class SizedStack<T> extends Stack<T> {
         return super.peek();
     }
 
+    /**
+     * Checks if the stack is full
+     * @return true if full, false otherwise
+     */
     public boolean isFull() {
         return this.size() == maxSize;
     }
 
     @Override
     public synchronized T peek() {
-        if (isEmpty()) { return null; }
+        if (isEmpty()) {
+            return null;
+        }
         return super.peek();
     }
 }

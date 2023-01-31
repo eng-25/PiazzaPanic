@@ -16,6 +16,13 @@ public class WindowPause extends WindowClosable {
     private final WindowGuide guideWindow;
     private final PiazzaPanic game;
 
+    /**
+     * Creates a new closable pause window, with an invisible guide window attached.
+     *
+     * @param title           title of window, made not visible
+     * @param resourceManager a ResourceManager instance
+     * @param game            the main Game instance
+     */
     public WindowPause(String title, ResourceManager resourceManager, PiazzaPanic game) {
         super(title, resourceManager);
         guideWindow = new WindowGuide("pauseGuideWindow", resourceManager);
@@ -25,6 +32,9 @@ public class WindowPause extends WindowClosable {
         setupButtons();
     }
 
+    /**
+     * Sets up all buttons on the window
+     */
     private void setupButtons() {
         Table table = getTitleTable();
 
@@ -35,6 +45,7 @@ public class WindowPause extends WindowClosable {
         final TextButton guideButton = UIHelper.createTextButton("How To Play", padLeft, padTop, table);
         final TextButton muteButton = UIHelper.createTextButton("Mute", padLeft, padTop, table);
 
+        // mute button listener
         muteButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -44,6 +55,7 @@ public class WindowPause extends WindowClosable {
             }
         });
 
+        // guide button listener
         guideButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

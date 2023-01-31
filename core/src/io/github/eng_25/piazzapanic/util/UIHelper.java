@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+/**
+ * A helper class used to create UI elements.
+ */
 public class UIHelper {
 
     private static final ResourceManager resourceManager = new ResourceManager();
@@ -38,7 +41,7 @@ public class UIHelper {
     }
 
     /**
-     * Creates a text button with black text - convenience of other method without colour
+     * Creates a text button with black text
      *
      * @param buttonText text to be shown on button
      * @param padLeft    amount of left padding
