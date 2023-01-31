@@ -17,10 +17,22 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
             "Bun", new Ingredient("bun", rm.bun, rm.bun).prepare() // always prepared
     );
 
+    /**
+     * Returns a copy of Ingredient given
+     *
+     * @param ing Ingredient to copy
+     * @return new instance of Ingredient
+     */
     public static Ingredient copyOf(Ingredient ing) {
         return new Ingredient(ing.getName(), ing.textures[0], ing.textures[1]);
     }
 
+    /**
+     * Convenience to get a copy of a Ingredient with its map name
+     *
+     * @param mapName map name of Ingredient to copy
+     * @return new instance of Ingredient
+     */
     public static Ingredient getIngredient(String mapName) { // statically returns a copy of given ingredient
         return copyOf(INGREDIENT_MAP.get(mapName));
     }
@@ -28,6 +40,13 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
     private boolean isPrepared;
     private final TextureRegion[] textures; // {unprepared, prepared}
 
+    /**
+     * Creates a new Ingredient, mapping textures to a TextureRegion array in order of [unprepared, prepared]
+     *
+     * @param name       name of Ingredient
+     * @param unprepared unprepared texture
+     * @param prepared   prepared texture
+     */
     public Ingredient(String name, TextureRegion unprepared, TextureRegion prepared) {
         super(name);
         isPrepared = false;
@@ -60,6 +79,12 @@ public class Ingredient extends BaseIngredient implements Comparable<Ingredient>
         return isPrepared ? textures[1] : textures[0];
     }
 
+    /**
+     * Used to compare 2 Ingredients, based on isPrepared and name.
+     *
+     * @param ing the object to be compared.
+     * @return true if isPrepared boolean and name String are both equal, false otherwise.
+     */
     @Override
     public int compareTo(Ingredient ing) {
         if ((ing.isPrepared && this.isPrepared) && (ing.getName().equals(this.getName()))) {

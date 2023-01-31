@@ -1,8 +1,9 @@
 package io.github.eng_25.piazzapanic.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,61 +13,48 @@ import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.UIHelper;
 
 /**
- * Main menu screen, used to start a new game and to mute the game
+ * Ending Screen, used to display game's timer, end message and a button to return to the main menu.
  */
-public class ScreenMenu extends ScreenBase {
+public class ScreenGameEnd extends ScreenBase {
 
+    private final String endMessage;
+    private final int timeTaken;
     private Table table;
 
-    private final float TABLE_TOP_PAD_MULTIPLIER = 4 / 10f; // pad amount multiplier from top of screen for the table
-
-    /***
-     * Creates a new ScreenMenu, using a ScreenViewport
-     * @param game main Game instance
-     * @param rm a ResourceManager instance, to access assets
+    /**
+     * @param game       main Game instance
+     * @param rm         an instance of ResourceManager, to access Assets
+     * @param endMessage the ending message to be displayed
+     * @param timeTaken  the game timer
      */
-    public ScreenMenu(PiazzaPanic game, ResourceManager rm) {
+    public ScreenGameEnd(PiazzaPanic game, ResourceManager rm, String endMessage, float timeTaken) {
         super(game, rm, new ScreenViewport());
+        this.endMessage = endMessage;
+        this.timeTaken = (int) Math.floor(timeTaken);
     }
 
     /**
-     * Convenience to call all button methods, allows more buttons to be added here
+     * Writes text to the screen
      */
-    private void addButtons() {
-        // logo
-        Image img = new Image(resourceManager.logo);
-        img.scaleBy(2f);
-        table.add(img).padLeft(-img.getWidth()*2);
+    private void addText() {
+        Label.LabelStyle style = new Label.LabelStyle(resourceManager.font, Color.WHITE);
+        table.add(new Label(endMessage, style));
         table.row();
-
-        addPlayButton();
-        addMuteButton();
+        int mins = timeTaken / 60;
+        String timeString = mins > 0 ? (mins + "m " + (timeTaken - (mins * 60)) + "s ") : (timeTaken + "s ");
+        table.add(new Label("Time spent playing: " + timeString, style));
+        table.row();
     }
 
     /**
-     * Adds a mute button to the Menu Screen's table, toggling the isMuted boolean in the game class
+     * Creates button to return to main menu
      */
-    private void addMuteButton() {
-        final TextButton button = UIHelper.createTextButton("Mute", 0, 40, table);
+    private void addReturnButton() {
+        final TextButton button = UIHelper.createTextButton("Main Menu", 0, 10, table);
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.toggleMuted();
-                String newText = game.isMuted() ? "Unmute" : "Mute";
-                button.setText(newText);
-            }
-        });
-    }
-
-    /**
-     * Adds a play button to the Menu Screen's table, changing the screen to a new ScreenGame
-     */
-    private void addPlayButton() {
-        final TextButton button = UIHelper.createTextButton("Play", 0, 0, table);
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new ScreenGame(game, resourceManager));
+                game.setScreen(new ScreenMenu(game, resourceManager));
             }
         });
     }
@@ -74,12 +62,14 @@ public class ScreenMenu extends ScreenBase {
     @Override
     public void show() {
         table = createTable();
-        table.top().padTop(PiazzaPanic.DEFAULT_HEIGHT * TABLE_TOP_PAD_MULTIPLIER); // set table's gravity to top and pad top a little
+        table.top().padTop(viewport.getScreenHeight() * 0.1f);
 
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
 
-        addButtons();
+        addText();
+
+        addReturnButton();
     }
 
     @Override
@@ -90,7 +80,7 @@ public class ScreenMenu extends ScreenBase {
 
     @Override
     public void resize(int width, int height) {
-        table.top().padTop(height * TABLE_TOP_PAD_MULTIPLIER);
+        table.top().padTop(height * 0.1f);
         super.resize(width, height);
     }
 

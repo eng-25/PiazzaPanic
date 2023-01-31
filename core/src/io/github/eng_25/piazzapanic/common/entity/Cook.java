@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import io.github.eng_25.piazzapanic.common.ingredient.BaseIngredient;
-import io.github.eng_25.piazzapanic.util.ResourceManager;
 import io.github.eng_25.piazzapanic.util.SizedStack;
 
 public class Cook extends Actor {
@@ -19,6 +18,11 @@ public class Cook extends Actor {
     private boolean isInteracting;
     TextureRegion texture;
 
+    /**
+     * Initialise a new cook not moving or interacting, with a stack of size 3
+     * @param texture texture used for cook
+     * @param originalPos starting position of cook
+     */
     public Cook(TextureRegion texture, Vector2 originalPos) {
         stack = new SizedStack<>(3);
         this.position = originalPos;
@@ -70,16 +74,16 @@ public class Cook extends Actor {
         // ---------------------------------left + right (x)
         if ((position.x < 0 && movement.x < 0) // out of bounds left
                 || ((((position.x < 0.9 || (position.x < 2.9 && position.x > 1.3)
-                        || (position.x > 3.3 && position.x < 4.9) || (position.x > 5.3 && position.x < 6.9)
-                        || (position.x > 7.3))
-                        && (position.y > 0.8 && position.y < 1.8))) && movement.x < 0)) {
+                || (position.x > 3.3 && position.x < 4.9) || (position.x > 5.3 && position.x < 6.9)
+                || (position.x > 7.3))
+                && (position.y > 0.8 && position.y < 1.8))) && movement.x < 0)) {
             // resetX();
             position.x = oldXPos;
         } else if ((position.x > 8.5 && movement.x > 0) // out of bounds right
                 || ((((position.x < 0.8 || (position.x < 2.8 && position.x > 1.2)
-                        || (position.x > 3.2 && position.x < 4.8) || (position.x > 5.2 && position.x < 6.8)
-                        || (position.x > 7.2))
-                        && (position.y > 0.8 && position.y < 1.8))) && movement.x > 0)) {
+                || (position.x > 3.2 && position.x < 4.8) || (position.x > 5.2 && position.x < 6.8)
+                || (position.x > 7.2))
+                && (position.y > 0.8 && position.y < 1.8))) && movement.x > 0)) {
             // resetX();
             position.x = oldXPos;
         } else {
@@ -88,18 +92,18 @@ public class Cook extends Actor {
         // ------------------------------------------down + up (y)
         if ((position.y < 0 && movement.y < 0) // out of bounds down
                 || ((position.y < 1.9 && position.y > 0.9)
-                        && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
-                                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
-                                || (position.x > 7.3 && position.x < 8.8))
-                        && movement.y < 0)) {
+                && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
+                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
+                || (position.x > 7.3 && position.x < 8.8))
+                && movement.y < 0)) {
             // resetY();
             position.y = oldYPos;
         } else if ((position.y > 13 && movement.y > 0) // out of bounds up
                 || ((position.y > 0.7 && position.y < 1.8)
-                        && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
-                                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
-                                || (position.x > 7.3 && position.x < 8.8))
-                        && movement.y > 0)) {
+                && ((position.x > -0.2 && position.x < 0.8) || (position.x > 1.3 && position.x < 2.8)
+                || (position.x > 3.3 && position.x < 4.8) || (position.x > 5.3 && position.x < 6.8)
+                || (position.x > 7.3 && position.x < 8.8))
+                && movement.y > 0)) {
             // resetY();
             position.y = oldYPos;
         } else {
@@ -140,14 +144,23 @@ public class Cook extends Actor {
         return stack.isEmpty();
     }
 
+    /**
+     * Resets the Y axis movement speed to 0
+     */
     public void resetY() {
         movement.y = 0;
     }
 
+    /**
+     * Resets the X axis movement speed to 0
+     */
     public void resetX() {
         movement.x = 0;
     }
 
+    /**
+     * Stops all movement
+     */
     public void stopMoving() {
         resetX();
         resetY();
@@ -164,9 +177,4 @@ public class Cook extends Actor {
     public boolean isInteracting() {
         return isInteracting;
     }
-
-    public static Cook createCook(int startX, int startY, TextureRegion texture) {
-        return new Cook(texture, new Vector2(startX, startY));
-    }
-
 }

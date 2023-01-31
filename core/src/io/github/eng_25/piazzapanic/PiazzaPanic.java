@@ -5,6 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.eng_25.piazzapanic.screen.ScreenMenu;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
+/**
+ * The main Game class, called when the DesktopLauncher is run.
+ * Initially sets the screen to a ScreenMenu, and is not muted.
+ */
 public class PiazzaPanic extends Game {
 
     // default values for window's height and width

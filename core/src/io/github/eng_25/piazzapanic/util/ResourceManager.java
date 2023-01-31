@@ -35,6 +35,10 @@ public class ResourceManager {
     public TextureRegion customer;
     public TextureRegion barBg;
     public TextureRegion barFg;
+    public TextureRegion speech;
+    public TextureRegion howToPlay;
+    public TextureRegion logo;
+    public TextureRegion[] platingChars;
 
     public TextureRegion[][] reputation_textures;
 
@@ -44,11 +48,14 @@ public class ResourceManager {
 
     private final AssetManager assetManager = new AssetManager();
 
+    /**
+     * Creates a new ResourceManager, loading all assets, fonts, maps and sounds
+     */
     public ResourceManager() {
         // load texture atlas
-        assetManager.load("assets/asset/texture.atlas", TextureAtlas.class);
+        assetManager.load("asset/texture.atlas", TextureAtlas.class);
         assetManager.finishLoading(); // ensures loading is finished before any textures can be accessed
-        atlas = assetManager.get("assets/asset/texture.atlas", TextureAtlas.class);
+        atlas = assetManager.get("asset/texture.atlas", TextureAtlas.class);
 
         // textures
         buttonUp = atlas.findRegion("button_up");
@@ -73,14 +80,24 @@ public class ResourceManager {
         customer = atlas.findRegion("customer");
         barBg = atlas.findRegion("bar_bg");
         barFg = atlas.findRegion("bar_fg");
+        speech = atlas.findRegion("speech_bubble");
+        howToPlay = atlas.findRegion("how_to_play");
+        logo = atlas.findRegion("logo");
 
         reputation_textures = atlas.findRegion("reputation_region").split(96, 32);
+        platingChars = new TextureRegion[]{
+                atlas.findRegion("slash"),
+                atlas.findRegion("zero"),
+                atlas.findRegion("one"),
+                atlas.findRegion("two"),
+                atlas.findRegion("three")
+        };
 
         // font
-        font = new BitmapFont(Gdx.files.internal("assets/fonts/font.fnt"), false);
+        font = new BitmapFont(Gdx.files.internal("fonts/font.fnt"), false);
 
         // map
-        gameMap = new TmxMapLoader().load("assets/maps/kitchen.tmx");
+        gameMap = new TmxMapLoader().load("maps/kitchen.tmx");
 
     }
 

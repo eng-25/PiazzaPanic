@@ -8,8 +8,7 @@ import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
 import java.util.List;
 
 /**
- * If the item at the top of the stack is able to be used on the cooking station,
- * it will push the prepared version onto the stack after a specified preparation time.
+ * Used to prepare Ingredients over a given preparation time
  */
 public class CookingStation extends InteractionStation {
 
@@ -19,9 +18,11 @@ public class CookingStation extends InteractionStation {
 
     /**
      * Creates a cooking station with a position, a list of valid inputs and a preparation time.
-     * @param position The position of the cooking station.
-     * @param validInputs A list of items that the cooking station will interact with.
-     * @param prepTime The time taken for the action of the cooking station to be completed.
+     * Initially has no attached cook and holds no ingredient to prepare.
+     *
+     * @param position    The position of the cooking station.
+     * @param validInputs A list of Ingredients that the cooking station will prepare.
+     * @param prepTime    The time taken for the preparation to be completed.
      */
     public CookingStation(Vector2 position, List<Ingredient> validInputs, int prepTime) {
         super(position, prepTime);
@@ -31,8 +32,7 @@ public class CookingStation extends InteractionStation {
     }
 
     /**
-     * If interaction is allowed, the prepared ingredient is pushed to the cook's stack.
-     * They are also allowed to move after interaction is completed.
+     * Allows the attached cook to move again, and pushes the now prepared Ingredient onto their stack
      */
     @Override
     public void finishInteract() {
@@ -41,10 +41,12 @@ public class CookingStation extends InteractionStation {
     }
 
     /**
-     * Checks if the top of the cook's stack is an ingredient that the cooking station can interact with.
-     * This is true if it is an ingredient, non-prepared and an ingredient specified by the list validInputs.
+     * Checks if the top of the cook's stack is valid for interaction.
+     * This is true if it is an instance of Ingredient, non-prepared and an ingredient specified by the list validInputs.
+     * If valid, attached cook is set to cook, and toPrep is set to the unprepared Ingredient popped from the cook's stack
+     *
      * @param cook The cook interacting with the cooking station.
-     * @return Whether interaction is valid.
+     * @return true if the interaction is valid, false otherwise.
      */
     @Override
     public boolean canInteract(Cook cook) {
