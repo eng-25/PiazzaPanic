@@ -19,7 +19,7 @@ public class Customer {
 
     private final ResourceManager rm = new ResourceManager();
     private final TextureRegion dishTexture;
-    //private final TextureRegion speechTexture = rm.speech;
+    private final TextureRegion speechTexture = rm.speech;
     private final TextureRegion progressBg = rm.barBg;
     private final TextureRegion progressBar = rm.barFg;
     private final TextureRegion texture = rm.customer;
@@ -68,16 +68,16 @@ public class Customer {
         batch.draw(texture, position.x+1, position.y, 1, 2);
 
         // speech render
-        //batch.draw(speechTexture, position.x+1, position.y+1.5, 1, 2);
+        batch.draw(speechTexture, position.x+1.8f, position.y+1.2f, 1.5f, 2);
         // dish inside speech render
-        batch.draw(dishTexture, position.x+1, position.y+2, 1, 1);
+        batch.draw(dishTexture, position.x+2.15f, position.y+1.8f, 1, 1);
 
         // progress render
         if (shouldTickTimer) {
             float barX = progressBg.getRegionWidth() / tileSize;
             float barY = progressBg.getRegionHeight() / tileSize;
             float barXPos = position.x+1;
-            float barYPos = position.y+3;
+            float barYPos = position.y+1.9f;
             float progress = 1-(waitTime-timer)/waitTime;
             batch.draw(progressBg, barXPos, barYPos, barX, barY);
             batch.draw(progressBar, barXPos, barYPos, barX*progress, barY);

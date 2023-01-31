@@ -348,6 +348,8 @@ public class ScreenGame extends ScreenBase {
         UIViewport.apply();
         UIStage.act(delta);
         UIStage.draw();
+
+        System.out.println(customersWaiting);
     }
 
     @Override

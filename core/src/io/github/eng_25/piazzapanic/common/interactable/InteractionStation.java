@@ -50,7 +50,6 @@ public abstract class InteractionStation {
 
     public void tickTimer(float delta) {
         if (isWorking) {
-            System.out.println(currentTimer);
             currentTimer -= delta;
             if (currentTimer <= 0) {
                 isWorking = false;

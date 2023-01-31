@@ -35,6 +35,8 @@ public class ResourceManager {
     public TextureRegion customer;
     public TextureRegion barBg;
     public TextureRegion barFg;
+    public TextureRegion speech;
+    public TextureRegion howToPlay;
 
     public TextureRegion[][] reputation_textures;
 
@@ -73,6 +75,8 @@ public class ResourceManager {
         customer = atlas.findRegion("customer");
         barBg = atlas.findRegion("bar_bg");
         barFg = atlas.findRegion("bar_fg");
+        speech = atlas.findRegion("speech_bubble");
+        howToPlay = atlas.findRegion("how_to_play");
 
         reputation_textures = atlas.findRegion("reputation_region").split(96, 32);
 
