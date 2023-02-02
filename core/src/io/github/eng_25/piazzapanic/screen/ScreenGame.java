@@ -53,16 +53,16 @@ public class ScreenGame extends ScreenBase {
     private WindowGuide guideWindow;
 
     // various constants for game rule tweaking
-    public static final float WINDOW_SIZE = 1f; // window size relative to screen size
-    public static final int TOTAL_CUSTOMERS = 3; // number of customers throughout mode
-    public static final int COOK_COUNT = 3; // total number of cooks
+    public static final float WINDOW_SIZE = 0.6f; // window size relative to screen size
+    public static final int TOTAL_CUSTOMERS = 5; // number of customers throughout mode
+    public static final int COOK_COUNT = 2; // total number of cooks
     public static final float COOK_SPEED = 3f;
     public static final int REPUTATION_AMOUNT = 3; // how many reputation points initially
-    public static final int CUSTOMER_INTERVAL = 5; // interval in seconds between customers
+    public static final int CUSTOMER_INTERVAL = 60; // interval in seconds between customers
     public static final int CUSTOMER_TIMER = 60; // time before reputation is lost, customer still never leaves due to time
-    public static final int PREP_TIME_PAN = 3; // pan preparation time in seconds
-    public static final int PREP_TIME_CHOP = 2; // chopping preparation time in seconds
-    public static final float INTERACTION_RANGE = 1.5f;
+    public static final int PREP_TIME_PAN = 30; // pan preparation time in seconds
+    public static final int PREP_TIME_CHOP = 15; // chopping preparation time in seconds
+    public static final float INTERACTION_RANGE = 1f;
 
     /**
      * Creates a new game Screen, using an ExtendViewport with a 16:9 aspect ratio and a new camera.
