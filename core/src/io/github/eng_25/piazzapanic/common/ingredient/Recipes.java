@@ -9,15 +9,20 @@ import java.util.TreeSet;
 public enum Recipes {
 
     SALAD(List.of(
-            Ingredient.getIngredient("Onion").prepare(),
-            Ingredient.getIngredient("Lettuce").prepare(),
-            Ingredient.getIngredient("Tomato").prepare()
-    ), Dish.getDish("Salad")),
+            getIngredient("Onion").prepare(),
+            getIngredient("Lettuce").prepare(),
+            getIngredient("Tomato").prepare()
+    ), getDish("Salad")),
     BURGER(List.of(
-            Ingredient.getIngredient("Bun"), // already prepared
-            Ingredient.getIngredient("Meat").prepare(),
-            Ingredient.getIngredient("Lettuce").prepare()
-    ), Dish.getDish("Burger"));
+            getIngredient("Bun"), // already prepared
+            getIngredient("Meat").prepare(),
+            getIngredient("Lettuce").prepare()
+    ), getDish("Burger"));
+    // Add new recipes here:
+//    BURGER2(List.of(
+//            getIngredient("Bun"),
+//            getIngredient("Tomato").prepare()
+//    ), getDish("Burger"));
 
     private final List<Ingredient> ingredientList;
     private final Dish dishOut;
@@ -54,5 +59,13 @@ public enum Recipes {
             }
         }
         return null;
+    }
+
+    public static Ingredient getIngredient(String mapName) {
+        return Ingredient.getIngredient(mapName);
+    }
+
+    public static Dish getDish(String mapName) {
+        return Dish.getDish(mapName);
     }
 }

@@ -28,6 +28,8 @@ import io.github.eng_25.piazzapanic.window.WindowPause;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 /**
  * The screen for the main game itself
@@ -57,6 +59,8 @@ public class ScreenGame extends ScreenBase {
     public static final int REPUTATION_AMOUNT = 3; // how many reputation points initially
     public static final int CUSTOMER_INTERVAL = 60; // interval in seconds between customers
     public static final int CUSTOMER_TIMER = 60; // time before reputation is lost, customer still never leaves due to time
+    public static final int PREP_TIME_PAN = 30; // pan preparation time in seconds
+    public static final int PREP_TIME_CHOP = 15; // chopping preparation time in seconds
 
     /**
      * Creates a new game Screen, using an ExtendViewport with a 16:9 aspect ratio and a new camera.
@@ -79,7 +83,7 @@ public class ScreenGame extends ScreenBase {
         // cook setup
         cooks = new Cook[COOK_COUNT];
         for (int i = 0; i < COOK_COUNT; i++) {
-            cooks[i] = new Cook(resourceManager.cook, new Vector2(2 * i, 2 * i));
+            cooks[i] = new Cook(resourceManager.cook, new Vector2(6-2 * i, 9-2 * i));
         }
         currentCook = cooks[0];
 
@@ -201,11 +205,16 @@ public class ScreenGame extends ScreenBase {
     }
 
     /**
-     * Switches between cooks. Only written for 2 cooks.
+     * Switches between cooks.
      */
     private void switchCooks() {
-        currentCook.stopMoving();
-        currentCook = currentCook == cooks[0] ? cooks[1] : cooks[0];
+        currentCook.stopMoving(); // stop current cook moving
+
+        OptionalInt currentIndexOpt = IntStream.range(0, cooks.length).filter(i -> cooks[i] == currentCook).findFirst();
+        if (currentIndexOpt.isPresent()) {
+            int currentIndex = currentIndexOpt.getAsInt();
+            currentCook = currentIndex == (COOK_COUNT-1) ? cooks[0] : cooks[currentIndex+1];
+        }
     }
 
     /**

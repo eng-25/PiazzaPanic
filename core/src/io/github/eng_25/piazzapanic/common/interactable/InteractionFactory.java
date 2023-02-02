@@ -2,6 +2,7 @@ package io.github.eng_25.piazzapanic.common.interactable;
 
 import com.badlogic.gdx.math.Vector2;
 import io.github.eng_25.piazzapanic.common.ingredient.Ingredient;
+import io.github.eng_25.piazzapanic.screen.ScreenGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
  */
 public class InteractionFactory {
 
-    public static final int PREP_TIME_PAN = 30; // pan preparation time in seconds
-    public static final int PREP_TIME_CHOP = 15; // chopping preparation time in seconds
+    public static final int PREP_TIME_PAN = ScreenGame.PREP_TIME_PAN; // pan preparation time in seconds
+    public static final int PREP_TIME_CHOP = ScreenGame.PREP_TIME_CHOP; // chopping preparation time in seconds
 
     /**
      * Creates and returns a list of given station type

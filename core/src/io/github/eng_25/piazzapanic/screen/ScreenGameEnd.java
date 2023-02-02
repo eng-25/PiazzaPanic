@@ -37,7 +37,7 @@ public class ScreenGameEnd extends ScreenBase {
      * Writes text to the screen
      */
     private void addText() {
-        Label.LabelStyle style = new Label.LabelStyle(resourceManager.font, Color.WHITE);
+        Label.LabelStyle style = new Label.LabelStyle(resourceManager.font, Color.BLACK);
         table.add(new Label(endMessage, style));
         table.row();
         int mins = timeTaken / 60;
