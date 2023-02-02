@@ -1,0 +1,26 @@
+@startuml
+/' we opted to add the functionality of interacting with
+a PantryBox, although it is not necessary for the
+CookingStation interaction to happen, it will necessarily need
+to happen at some point before the CookingStation interaction
+in order to obtain an unprepared Ingredient '/
+title Ingredient preparation sequence 2
+opt But is necessary 1:1 for \npreparation interaction
+PantryBox <- Cook : Interacts
+
+alt Cook's stack not full
+    PantryBox -> Cook : Pushes Ingredient (Unprepared)
+end
+end
+
+Cook -> CookingStation : Interacts
+opt Cook's stack not empty
+    CookingStation -> Cook : Pops stack
+    loop every second for \nCookingStation.timer seconds
+    CookingStation --> CookingStation : timer--
+    end
+    CookingStation --> CookingStation : prepares Ingredient
+    CookingStation -> Cook : Pushes prepared Ingredient onto stack
+end
+
+@enduml

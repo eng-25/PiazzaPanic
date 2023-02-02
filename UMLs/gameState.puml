@@ -1,0 +1,22 @@
+@startuml
+title Game state
+[*] --> GameStart
+GameStart --> AddCustomer : Add initial customer
+Idle --> TickTimer : Game tick
+TickTimer --> Idle : 'Customer Interval' seconds have not passed
+TickTimer --> AddCustomer : 'Customer Interval' seconds have passed
+AddCustomer --> Idle
+
+Idle --> AddToCustomerTotal : Customer served
+AddToCustomerTotal --> Idle : Customers served < 5
+AddToCustomerTotal --> WinGame : Customers served = 5
+
+Idle --> LoseReputationPoint : Customer timer expires
+LoseReputationPoint --> Idle : Reputation points > 0
+LoseReputationPoint --> LoseGame : Reputation points = 0
+
+LoseGame --> [*]
+WinGame --> [*]
+
+' update with game paused? + main menu + end screen? or just keep to core game logic
+@enduml

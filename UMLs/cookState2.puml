@@ -1,0 +1,28 @@
+@startuml
+title Cook state 2
+
+[*] --> Idle
+
+' movement now happens per game tick, and input simply affects directional speed
+Idle -left-> UpdateDirectionalSpeeds : Move key input
+UpdateDirectionalSpeeds --> Idle
+UpdateDirectionalSpeeds: based on input, change directional speed\ne.g. holding left would change x speed to -1 \nand y speed to 0
+
+Idle --> MoveCharacter : Game tick
+MoveCharacter --> Idle
+
+Idle --> SwitchCooks : 'Switch Cooks' key input
+SwitchCooks : Changes current cook being controlled\naffecting stack used for interaction and\nvisual elements of game
+SwitchCooks --> Idle
+
+
+Idle -> CheckInteraction : Interact key input
+CheckInteraction --> CheckInteractionValid : In valid range of station
+CheckInteractionValid --> Idle : Interaction not valid
+CheckInteractionValid : check station's critera e.g. PantryBox\nrequires the cook to have an empty \nslot in their stack to add Ingredient to
+CheckInteractionValid --> PerformInteraction : Interaction valid
+PerformInteraction --> Idle
+
+Idle --> [*] : Game ends
+
+@enduml

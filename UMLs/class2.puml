@@ -1,0 +1,165 @@
+@startuml
+title Class 2
+scale max 3200*1800
+left to right direction
+note "Any classes, fields or methods marked \nwith a * are from the LibGDX library" as N0
+
+note "extends LibGDX Game class.\nHolds the univeral SpriteBatch and\nmanages which screen is currently shown" as N1
+PiazzaPanic . N1
+
+class PiazzaPanic {
+batch: SpriteBatch*
+menuScreen: ScreenMenu
+muted: boolean
+toggleMuted()
+}
+
+note "extends LibGDX Window class" as N2
+WindowClosable . N2
+
+abstract class WindowClosable {
+closeButtonStyle: ImageButtonStyle
+addCloseButton()
+}
+
+class WindowPause {
+muteButtonStyle: ImageButtonStyle
+guideButtonStyle: ImageButtonStyle
+addMuteButton()
+addGuideButton()
+}
+
+class WindowGuide {
+}
+
+WindowClosable <|-- WindowGuide
+WindowClosable <|-- WindowPause
+WindowPause - WindowGuide : > can open
+
+note "Extends LibGDX Screen class.\nAbstract base class for all other screens" as N4
+ScreenBase .. N4
+
+abstract class ScreenBase {
+game: PiazzaPanic
+camera: OrthographicCamera*
+viewport: Viewport*
+createTable()
+createButton()
+}
+
+class ScreenGame {
+pauseWindow: WindowPause
+cooks: Cook[]
+currentCook: Cook
+reputationPoints: int
+customerCount: int
+setupWindows()
+setupUI()
+switchCooks()
+}
+ScreenGame -- WindowGuide : > opens on game start
+
+class ScreenMenu {
+addButtons()
+}
+
+class ScreenGameEnd {
+time: int
+addCloseButton()
+}
+
+ScreenBase <|--- ScreenGame
+ScreenBase <|- ScreenGameEnd
+ScreenBase <|-- ScreenMenu
+
+note "Used to render map and manage all stations,\nmay be multiple of each e.g. 5 pantry boxes" as N3
+PiazzaMap . N3
+
+class PiazzaMap {
+tileMap: TiledMap
+bin: InteractionStation
+cookingStation: InteractionStation
+pantryBox: InteractionStation
+platingStation: PlatingStation
+counters: Counter[3]
+renderMap()
+renderStations()
+checkInteraction(cook: Cook)
+getFreeCounter()
+}
+
+ScreenGame -- PiazzaMap : > has
+
+
+enum Recipe {
+SALAD
+BURGER
+checkValidRecipe(ingredientList:List<Ingredient>)
+}
+
+class Customer {
+dishWanted: Dish
+position: Vector2
+timer: int
+shouldTickTimer: boolean
+walkToCounter(counter: Counter)
+tickTimer()
+loseReputation()
+leaveCounter()
+}
+
+class Cook {
+stack: Ingredient[3]
+position: Vector2
+move(xAmount:int, yAmount:int)
+isStackFull()
+pushToStack(toAdd:BaseIngredient)
+popStack()
+}
+
+abstract class BaseIngredient {
+name: String
+getTexture()
+}
+
+class Ingredient {
+isPrepared: boolean
+textures: Texture[2]
+prepare()
+}
+
+class Dish {
+texture: Texture
+}
+
+BaseIngredient <|-- Ingredient
+BaseIngredient <|-- Dish
+
+note "Can be instanced to all other stations\ne.g. bin no output and 0 timer, pantry no input and 0 timer\nCooking station has in, out and timer" as N5
+InteractionStation . N5
+
+class InteractionStation {
+-input: Ingredient
+-output: Ingredient
+prepTimer: int
+position: Vector2
+checkInput(ingredient:Ingredient)
+tickTimer()
+}
+
+class Counter {
+input: Dish
+customer: Customer
+attachCustomer(customer: Customer)
+}
+
+class PlatingStation {
+heldIngredients: Ingredient[]
+output: Dish
+removeIngredient()
+}
+
+InteractionStation <|-- Counter
+InteractionStation <|-- PlatingStation
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+title Ingredient preparation sequence 1
+Cook -> CookingStation : Interacts
+opt Cook's stack not empty
+    CookingStation -> Cook : Pops stack
+    loop every second for \nCookingStation.timer seconds
+    CookingStation --> CookingStation : timer--
+    end
+    CookingStation --> CookingStation : prepares Ingredient
+    CookingStation -> Cook : Pushes prepared Ingredient onto stack
+end
+@enduml

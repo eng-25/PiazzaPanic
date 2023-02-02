@@ -1,0 +1,17 @@
+@startuml
+title Dish preparation sequence
+Cook->PlatingStation: Adds Prepared Ingredient
+PlatingStation->Recipes: Checks for valid recipe
+
+alt valid recipe
+ Recipes->PlatingStation: Returns appropriate dish
+ PlatingStation->PlatingStation: Sets output Dish
+ Cook->PlatingStation: Can take dish
+
+else invalid recipe
+ Recipes->PlatingStation: Returns null
+ PlatingStation->PlatingStation: Sets output empty
+ Cook->PlatingStation: Cannot take dish
+
+end
+@enduml

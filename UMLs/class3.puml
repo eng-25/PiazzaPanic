@@ -1,0 +1,251 @@
+@startuml
+title final Class
+left to right direction
+scale max 3200*1800
+note "Any classes, fields or methods marked \nwith a * are from the LibGDX library" as N0
+
+package Window #DDDDDD {
+
+    note "extends LibGDX Window class" as N2
+    WindowClosable . N2
+
+    abstract class WindowClosable {
+    closeButtonStyle: ImageButtonStyle
+    addCloseButton()
+    }
+
+    ' removed button styles, and merged both methods into a single one
+    class WindowPause {
+    setupButtons()
+    }
+
+    class WindowGuide {
+    }
+
+    WindowClosable <|-- WindowGuide
+    WindowClosable <|-- WindowPause
+    WindowPause - WindowGuide : > can open
+}
+
+package Screen #DDDDDD {
+
+    note "Extends LibGDX Screen class.\nAbstract base class for all other screens" as N4
+    ScreenBase .. N4
+
+    /' we decided the createButton method could be useful in other classes too, not just screens,
+    so we removed it from the ScreenBase class and implemented it into a helper class '/
+    abstract class ScreenBase {
+    game: PiazzaPanic
+    camera: OrthographicCamera*
+    viewport: Viewport*
+    createTable()
+    }
+
+    ' added game timer, and timer/customer methods
+    class ScreenGame {
+    pauseWindow: WindowPause
+    cooks: Cook[2]
+    currentCook: Cook
+    reputationPoints: int = 3
+    customerCount: int = 5
+    gameTimer: int
+    setupWindows()
+    setupUI()
+    switchCooks()
+    tickTimer()
+    addCustomer()
+    gameEnd()
+    }
+    ScreenGame -u- WindowGuide : > opens on game start
+
+    class ScreenMenu {
+    addButtons()
+    }
+
+    class ScreenGameEnd {
+    time: int
+    addCloseButton()
+    }
+    ScreenGame - ScreenGameEnd : > switches to on game end
+
+    ScreenBase <|--- ScreenGame
+    ScreenBase <|-- ScreenGameEnd
+    ScreenBase <|- ScreenMenu
+}
+
+note "extends LibGDX Game class.\nHolds the univeral SpriteBatch and\nmanages which screen is currently shown" as N1
+PiazzaPanic . N1
+
+class PiazzaPanic {
+batch: SpriteBatch*
+menuScreen: ScreenMenu
+muted: boolean
+toggleMuted()
+}
+
+package Common {
+
+    note "Used to render map and manage all stations,\nreworked to hold counts and positions of each station \nas well as a list of all grouped" as N3
+    PiazzaMap . N3
+    /' we discussed futureproofing this code, and changed the hard coded instances of stations
+    to counts and lists of their positions which are much easier to extend
+    as well as adding a factory to create the stations
+
+     we also realised these integers and position lists could be done as big 2D lists or maps, but here left them
+     individually to not restrict ourselves or go too in-depth
+     '/
+    note right of PiazzaMap : the count integers and position vectors \ncould be defined in 2D lists or maps but \nare left expanded here for clarity
+    class PiazzaMap {
+    tileMap: TiledMap
+    binCount: int
+    panCount: int
+    choppingCount: int
+    pantryBoxCount: int
+    platingCount: int
+    counterCount: int
+    binPositions: Vector2[]
+    panPositions: Vector2[]
+    choppingPositions: Vector2[]
+    boxPositions: Vector2[]
+    platingPositions: Vector2[]
+    counterPositions: Vector2[]
+    counters: Counter[counterCount]
+    interactableList: InteractionStation[]
+    renderMap()
+    renderStations()
+    checkInteraction(cook: Cook)
+    getFreeCounter()
+    }
+
+    PiazzaMap -[hidden]- Entity
+    ScreenGame -down- PiazzaMap : > has
+
+    package Entity #DDDDDD {
+        class Customer {
+        dishWanted: Dish
+        position: Vector2
+        timer: int
+        shouldTickTimer: boolean
+        walkToCounter(counter: Counter)
+        tickTimer()
+        loseReputation()
+        leaveCounter()
+        }
+
+        /' discussed further how to implement movement, decided to use a secondary vector for movement speeds
+        we also realised we would need some parameters to define if each cook can move e.g. when busy interacting they
+        should not be able to move, so we added the canMove boolean '/
+        class Cook {
+        stack: Ingredient[3]
+        position: Vector2
+        movement: Vector2
+        moveSpeed: int
+        canMove: boolean
+        move(xAmount:int, yAmount:int)
+        isStackFull()
+        isStackEmpty()
+        pushToStack(toAdd:BaseIngredient)
+        popStack()
+        peekStack()
+        }
+    }
+
+    package Ingredient #DDDDDD {
+        enum Recipe {
+        SALAD
+        BURGER
+        {static} checkValidRecipe(ingredientList:List<Ingredient>)
+        }
+
+        abstract class BaseIngredient {
+        name: String
+        {abstract} getTexture()
+        }
+
+        class Ingredient {
+        isPrepared: boolean
+        textures: Texture[2]
+        prepare()
+        }
+
+        class Dish {
+        texture: Texture
+        }
+
+        Ingredient -|> BaseIngredient
+        BaseIngredient <|- Dish
+    }
+
+    package Interaction #DDDDDD {
+    note "Reworked into more child classes, \nand factory added for creation" as N5
+
+        /' each station would need a check if it's being interacted with already to prevent duplicates, so we added isWorking
+        we changed the interaction check method to use the Cook parameter not Ingredient, as all checks are stack based but not all ingredient
+        we also figured some logic would need to happen before the interaction and some after, so created another finishInteract method '/
+        abstract class InteractionStation {
+        prepTimer: int
+        position: Vector2
+        isWorking: boolean
+        {abstract}canInteract(cookInteracting:Cook)
+        {abstract}finishInteract()
+        tickTimer()
+        }
+
+        class PantryBox {
+        output: Ingredient
+        }
+
+        ' doesn't need an input Ingredient at all
+        class Bin
+
+        /' since this will use a timer, and have cook logic both before and after the interaction/timer, we store the cook
+        also, since the output is based on the input which is obtained from the cook, we don't need to store it '/
+        class CookingStation {
+        validInputs: List<Ingredient>
+        attachedCook: Cook
+        }
+
+        class Counter {
+        input: Dish
+        customer: Customer
+        attachCustomer(customer: Customer)
+        }
+
+        /' we opted to remove the removeIngredient method, and simply to clear the plating station if a recipe was
+        not valid, and the size of heldIngredients reached 3 since all recipes defined use 3 ingredients '/
+        class PlatingStation {
+        heldIngredients: Ingredient[]
+        output: Dish
+        clearStation()
+        checkRecipe()
+        }
+
+        InteractionStation <|-- PantryBox
+        InteractionStation <|- Bin
+        InteractionStation <|-- CookingStation
+        InteractionStation <|-- Counter
+        InteractionStation <|-- PlatingStation
+
+        ' factory mentioned in PiazzaMap changes
+        class InteractionFactory {
+            {static}InteractionStation createStations(count:int, \npositions:Vector2[count], type:String)
+        }
+    }
+}
+
+package Util #DDDDDD {
+    class UIHelper {
+        createButton(text:String, table:Table)
+    }
+    class ResourceManager
+    class SizedStack<T> {
+        maxSize: int
+        isFull()
+        isEmpty()
+        push(toPush: T)
+        peek()
+        pop()
+    }
+}
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+title Customer state 1
+[*] --> Created
+
+Created --> WaitingForDish : Moves to empty counter
+
+WaitingForDish --> TickTimer : Every Second, if timer hasn't expired yet
+TickTimer --> WaitingForDish : timer > 0
+TickTimer --> RemoveReputation : timer <= 0
+RemoveReputation --> SetTimerExpired
+SetTimerExpired --> WaitingForDish
+
+WaitingForDish --> CheckDish : Given Dish
+CheckDish --> RejectDish : Dish not correct
+RejectDish --> WaitingForDish
+CheckDish --> AcceptDish : Dish correct
+AcceptDish --> LeavesCounter
+
+LeavesCounter --> [*]
+@enduml

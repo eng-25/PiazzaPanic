@@ -1,0 +1,24 @@
+@startuml
+title Customer state 2
+state "Waiting for Dish" as Waiting
+state "Ticks Timer" as Tick
+state "Removes Reputation point" as RemoveReputation
+
+
+[*] --> Created
+
+Created --> Waiting : Moves to assigned counter
+Created: Customer created, assigned to empty \ncounter and given random Dish to request
+
+Waiting --> Tick : Every Second, if timer hasn't expired yet
+Tick --> Waiting : timer > 0
+Tick --> RemoveReputation : timer <= 0
+RemoveReputation --> Waiting: Sets timer expired
+
+Waiting --> CheckDish : Given Dish
+CheckDish: Checks dish given is the one requested by \nthe customer, dish is removed afterwards
+CheckDish --> Waiting : Dish not correct
+CheckDish --> LeavesCounter : Dish correct
+
+LeavesCounter --> [*]
+@enduml
