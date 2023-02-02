@@ -5,11 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import io.github.eng_25.piazzapanic.common.ingredient.BaseIngredient;
+import io.github.eng_25.piazzapanic.screen.ScreenGame;
 import io.github.eng_25.piazzapanic.util.SizedStack;
 
 public class Cook extends Actor {
 
-    public static final float MOVEMENT_SPEED = 3f; // movement speed
+    public static final float MOVEMENT_SPEED = ScreenGame.COOK_SPEED; // movement speed
 
     private final SizedStack<BaseIngredient> stack;
     private final Vector2 position;
