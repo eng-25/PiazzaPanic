@@ -61,6 +61,7 @@ public class ScreenGame extends ScreenBase {
     public static final int CUSTOMER_TIMER = 60; // time before reputation is lost, customer still never leaves due to time
     public static final int PREP_TIME_PAN = 30; // pan preparation time in seconds
     public static final int PREP_TIME_CHOP = 15; // chopping preparation time in seconds
+    public static final float INTERACTION_RANGE = 1f;
 
     /**
      * Creates a new game Screen, using an ExtendViewport with a 16:9 aspect ratio and a new camera.

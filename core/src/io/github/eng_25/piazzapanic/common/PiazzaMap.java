@@ -11,6 +11,7 @@ import io.github.eng_25.piazzapanic.common.interactable.Counter;
 import io.github.eng_25.piazzapanic.common.interactable.InteractionFactory;
 import io.github.eng_25.piazzapanic.common.interactable.InteractionStation;
 import io.github.eng_25.piazzapanic.common.interactable.PantryBox;
+import io.github.eng_25.piazzapanic.screen.ScreenGame;
 import io.github.eng_25.piazzapanic.util.ResourceManager;
 
 import java.util.Arrays;
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
 public class PiazzaMap {
 
     public static final float TILE_SIZE = 32f; // tile size in pixels
-    public static final float INTERACTION_RANGE = 1f;
+    public static final float INTERACTION_RANGE = ScreenGame.INTERACTION_RANGE;
 
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
